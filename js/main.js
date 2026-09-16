@@ -110,6 +110,7 @@ const projectsData = [
     category: "iot",
     categoryLabel: "IoT & Автоматизація",
     description: "Автономна система клімат-контролю з датчиками вологості ґрунту, температури DHT22 та автоматичним керуванням насосом через MQTT телеметрію.",
+    image: "assets/smart_greenhouse.svg",
     tags: ["ESP32", "FreeRTOS", "MQTT", "C++", "Sensors"],
     specs: {
       MCU: "ESP32-WROOM-32U",
@@ -148,6 +149,7 @@ void loop() {
   }
   delay(2000);
 }`,
+    image: "assets/smart_greenhouse.svg",
     schemaText: "Схема підключення: ESP32 GPIO23 -> Реле 5В (Насос), GPIO4 -> DHT22 Датчик, GPIO34 -> Аналоговий сенсор вологості ґрунту."
   },
   {
@@ -156,6 +158,7 @@ void loop() {
     category: "mechatronics",
     categoryLabel: "Мехатроніка",
     description: "4-осьовий мехатроний робот-маніпулятор з обертовою базою, зворотним зв'язком за допомогою серводвигунів MG996R та PID-регулятором траєкторії.",
+    image: "assets/stm32_robot_arm.svg",
     tags: ["STM32", "ARM Cortex-M4", "C/C++", "Kinematics", "PWM"],
     specs: {
       MCU: "STM32F401RE (Nucleo-64)",
@@ -189,6 +192,7 @@ void Compute_Arm_Position(float targetX, float targetY) {
     category: "mcu",
     categoryLabel: "Мікроконтролери",
     description: "Бездротова мережа енергоефективних сенсорних нод на базі ESP8266/ESP32 без використання WiFi роутера, зі збором даних на центральний хаб Raspberry Pi.",
+    image: "assets/smart_home_hub.svg",
     tags: ["Raspberry Pi", "ESP-NOW", "Python", "C++", "Low-Power"],
     specs: {
       Hub: "Raspberry Pi 4 Model B (Python Gateway)",
@@ -243,18 +247,7 @@ function initProjects() {
       card.className = 'project-card';
       card.innerHTML = `
         <div class="project-image">
-          <svg viewBox="0 0 400 200" width="100%" height="100%">
-            <rect width="400" height="200" fill="#080e1a"/>
-            <circle cx="200" cy="100" r="70" fill="none" stroke="rgba(0,242,254,0.15)" stroke-width="2"/>
-            <path d="M 100 100 Q 200 30 300 100 T 500 100" fill="none" stroke="url(#cyanGrad)" stroke-width="3"/>
-            <circle cx="200" cy="100" r="12" fill="#00f2fe"/>
-            <defs>
-              <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#00f2fe"/>
-                <stop offset="100%" stop-color="#4facfe"/>
-              </linearGradient>
-            </defs>
-          </svg>
+          <img src="${p.image}" alt="${p.title}" style="width: 100%; height: 100%; object-fit: cover;">
           <span class="project-badge">${p.categoryLabel}</span>
         </div>
         <div class="project-content">

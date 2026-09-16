@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070b14"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#050a12"/>
+    </linearGradient>
+    <linearGradient id="cyanGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#4facfe"/>
+    </linearGradient>
+    <linearGradient id="greenGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00ff88"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="450" fill="url(#bgGrad1)"/>
+  
+  <!-- Grid Lines -->
+  <g stroke="rgba(0, 242, 254, 0.05)" stroke-width="1">
+    <path d="M 0 50 H 800 M 0 100 H 800 M 0 150 H 800 M 0 200 H 800 M 0 250 H 800 M 0 300 H 800 M 0 350 H 800 M 0 400 H 800"/>
+    <path d="M 50 0 V 450 M 100 0 V 450 M 150 0 V 450 M 200 0 V 450 M 250 0 V 450 M 300 0 V 450 M 350 0 V 450 M 400 0 V 450 M 450 0 V 450 M 500 0 V 450 M 550 0 V 450 M 600 0 V 450 M 650 0 V 450 M 700 0 V 450 M 750 0 V 450"/>
+  </g>
+
+  <!-- Plant Greenhouse Graphic -->
+  <g transform="translate(120, 100)">
+    <!-- Soil Pot -->
+    <path d="M 60 220 L 80 280 H 220 L 240 220 Z" fill="#1e293b" stroke="#334155" stroke-width="3"/>
+    <ellipse cx="150" cy="220" rx="90" ry="15" fill="#334155"/>
+    <!-- Plant Stem & Leaves -->
+    <path d="M 150 220 Q 140 160 150 100" fill="none" stroke="url(#greenGlow)" stroke-width="6" filter="url(#glow)"/>
+    <path d="M 150 170 Q 100 150 80 170 Q 120 190 150 170" fill="url(#greenGlow)" opacity="0.8"/>
+    <path d="M 150 140 Q 200 120 220 140 Q 180 160 150 140" fill="url(#greenGlow)" opacity="0.8"/>
+    <path d="M 150 100 Q 120 70 140 50 Q 160 70 150 100" fill="url(#greenGlow)"/>
+    <!-- Moisture Sensor Pin -->
+    <path d="M 180 200 V 260 M 190 200 V 260" stroke="#00f2fe" stroke-width="3" filter="url(#glow)"/>
+  </g>
+
+  <!-- ESP32 & Controller Hardware Diagram -->
+  <g transform="translate(460, 80)">
+    <!-- PCB Board Base -->
+    <rect width="260" height="280" rx="16" fill="#0f172a" stroke="url(#cyanGlow)" stroke-width="2" filter="url(#glow)"/>
+    <!-- ESP32 Chip -->
+    <rect x="70" y="40" width="120" height="150" rx="6" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+    <rect x="85" y="60" width="90" height="90" rx="4" fill="#0f172a" stroke="#00f2fe" stroke-width="1.5"/>
+    <text x="130" y="105" font-family="monospace" font-size="14" font-weight="bold" fill="#00f2fe" text-anchor="middle">ESP32</text>
+    <text x="130" y="125" font-family="monospace" font-size="10" fill="#94a3b8" text-anchor="middle">WROOM-32U</text>
+    
+    <!-- Status LEDs -->
+    <circle cx="40" cy="50" r="6" fill="#00ff88" filter="url(#glow)"/>
+    <text x="40" y="70" font-family="monospace" font-size="9" fill="#94a3b8" text-anchor="middle">POWER</text>
+    <circle cx="40" cy="90" r="6" fill="#00f2fe" filter="url(#glow)"/>
+    <text x="40" y="110" font-family="monospace" font-size="9" fill="#94a3b8" text-anchor="middle">WIFI</text>
+
+    <!-- Display Screen -->
+    <rect x="40" y="210" width="180" height="50" rx="6" fill="#04070d" stroke="#00f2fe" stroke-width="1.5"/>
+    <text x="50" y="230" font-family="monospace" font-size="11" fill="#00ff88">TEMP: 24.5°C | HUM: 62%</text>
+    <text x="50" y="248" font-family="monospace" font-size="11" fill="#00f2fe">SOIL: 48%  [PUMP: OFF]</text>
+  </g>
+
+  <!-- Connecting Bus Cables -->
+  <path d="M 300 300 H 460" stroke="#00f2fe" stroke-width="3" stroke-dasharray="6,6" filter="url(#glow)"/>
+
+  <!-- Title Badge Overlay -->
+  <rect x="30" y="30" width="280" height="40" rx="20" fill="rgba(15, 23, 42, 0.85)" stroke="rgba(0, 242, 254, 0.3)" stroke-width="1"/>
+  <text x="50" y="55" font-family="sans-serif" font-size="14" font-weight="bold" fill="#00f2fe">🌱 Смарт-теплиця ESP32 IoT</text>
+</svg>
