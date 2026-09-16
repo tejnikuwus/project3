@@ -65,6 +65,7 @@ function initTypewriter() {
   const titles = [
     "Розробка мікроконтролерних систем",
     "Мехатроніка & Робототехніка",
+    "12-DOF Шагаючі Роботи-павуки",
     "IoT та Автоматизація пристроїв",
     "Учень 10 класу НВК №141 «ОРТ» м. Києва"
   ];
@@ -224,6 +225,59 @@ void setup() {
   esp_deep_sleep_start();
 }`,
     schemaText: "Топологія мережі: Ноди ESP8266 відправляють пакети за 15мс через ESP-NOW і засинають (Deep Sleep струм < 15мкА)."
+  },
+  {
+    id: 4,
+    title: "12-DOF Автономний Робот-павук на ESP32",
+    category: "mechatronics",
+    categoryLabel: "Мехатроніка",
+    description: "Шагаючий робот-павук (Quadruped / Hexapod) з 12 ступенями свободи, інверсною кінематикою (Inverse Kinematics), керуванням по Wi-Fi/Bluetooth та автоматичним обходом перешкод.",
+    image: "assets/spider_robot.svg",
+    tags: ["ESP32", "12-DOF Servos", "Inverse Kinematics", "PCA9685", "C++", "3D Printing"],
+    specs: {
+      MCU: "ESP32-WROOM-32 (Dual Core 240MHz)",
+      ServoDriver: "PCA9685 16-Ch 12-Bit I2C PWM Controller",
+      Actuators: "12x MG90S Metal Gear Micro Servos",
+      Sensors: "HC-SR04 Ultrasonic Sensor + MPU6050 IMU Gyro",
+      Power: "2x 18650 Li-Ion (7.4V) with 5V 5A DC-DC Buck Converter",
+      GaitEngine: "Tripod & Wave Gait IK Engine (C++)"
+    },
+    codeSnippet: `// ESP32 Spider Robot 12-DOF Inverse Kinematics Engine
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+#define FEMUR_LENGTH  45.0f // mm
+#define TIBIA_LENGTH  75.0f // mm
+
+// Leg Joint Angles computation using Inverse Kinematics
+void computeLegIK(uint8_t legIndex, float x, float y, float z) {
+  float L = sqrt(x*x + y*y);
+  float d = sqrt((L - 15.0f)*(L - 15.0f) + z*z);
+  
+  // Calculate Coxa, Femur & Tibia Angles
+  float coxaAngle  = atan2(y, x) * 180.0f / M_PI;
+  float alpha      = atan2(z, L - 15.0f);
+  float beta       = acos((FEMUR_LENGTH*FEMUR_LENGTH + d*d - TIBIA_LENGTH*TIBIA_LENGTH) / (2 * FEMUR_LENGTH * d));
+  float femurAngle = (alpha + beta) * 180.0f / M_PI;
+  
+  // Update PCA9685 Servo PWM Output
+  uint16_t pulseCoxa  = map(coxaAngle,  -90, 90, 150, 600);
+  uint16_t pulseFemur = map(femurAngle, -90, 90, 150, 600);
+  
+  pwm.setPWM(legIndex * 3 + 0, 0, pulseCoxa);
+  pwm.setPWM(legIndex * 3 + 1, 0, pulseFemur);
+}
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin(21, 22); // I2C SDA=21, SCL=22
+  pwm.begin();
+  pwm.setPWMFreq(50); // 50Hz Standard Servo Frequency
+  Serial.println("[SPIDER_BOT] 12-DOF IK Engine & Gait Matrix initialized.");
+}`,
+    schemaText: "Схема підключення: ESP32 шина I2C (GPIO21-SDA, GPIO22-SCL) підключена до драйвера PCA9685. 12 сервоприводів MG90S під'єднані до каналів 0-11 PCA9685. Ультразвуковий датчик HC-SR04 підключено до GPIO12 (Trig) та GPIO13 (Echo). Живлення плати ESP32 реалізовано через 5V LDO, а сервоприводи живляться окремо від імпульсного DC-DC Step-Down конвертера 5V 5A від двох акумуляторів 18650 (7.4V)."
   }
 ];
 
