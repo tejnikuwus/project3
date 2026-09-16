@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Артем | Портфоліо: Мікроконтролери, Мехатроніка &amp; Автоматизація</title>
+  <meta name="description" content="Персональне портфоліо Артема (учня 10 класу НВК №141 «ОРТ» м. Києва). Проектування мікроконтролерних систем (ESP32, STM32, Arduino), мехатроніка, роботизація та IoT пристрої.">
+  <meta name="keywords" content="Артем портфоліо, мікроконтролери, мехатроніка, ESP32, STM32, Arduino, ОРТ 141 Київ, роботизація, автоматизація, IoT">
+  <meta name="author" content="Артем">
+  
+  <!-- Favicon / Theme -->
+  <meta name="theme-color" content="#0a0e17">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ==================== NAVIGATION HEADER ==================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#hero" class="logo">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="4" y="4" width="16" height="16" rx="2"/>
+            <rect x="9" y="9" width="6" height="6"/>
+            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3"/>
+          </svg>
+        </div>
+        <span>АРТЕМ <span class="logo-sub">DEV &amp; MECHATRONICS</span></span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#about" class="nav-link">Про мене</a>
+        <a href="#projects" class="nav-link">Проекти</a>
+        <a href="#simulator" class="nav-link">Симулятор MCU</a>
+        <a href="#skills" class="nav-link">Навички</a>
+        <a href="#education" class="nav-link">Освіта</a>
+        <a href="#contact" class="nav-link">Контакти</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="status-badge">
+          <span class="pulse-dot"></span>
+          <span>ESP32 Ready</span>
+        </div>
+
+        <div class="mobile-toggle" aria-label="Відкрити меню">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="hero" class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-icon">🎓</span>
+          <span>Учень 10 класу • НВК №141 «ОРТ» м. Києва</span>
+        </div>
+
+        <h1 class="hero-title">
+          Розробник <span class="gradient-text">Мікроконтролерів</span><br>
+          &amp; <span class="gradient-text-green">Мехатроніки</span>
+        </h1>
+
+        <div class="hero-subtitle">
+          <span id="typed-text"></span><span class="typed-cursor">|</span>
+        </div>
+
+        <p class="hero-description">
+          Вітаю! Я створюю розумні пристрої автоматизації, програмую мікроконтролери (ESP32, STM32, Arduino) та проектую мехатронні робототехнічні системи від принципової схеми до готового пристрою.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#projects" class="btn btn-primary">
+            <span>Переглянути проекти</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="#simulator" class="btn btn-secondary">
+            <span>Інтерактивна лабораторія</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <h3>15+</h3>
+            <p>Зібраних пристроїв</p>
+          </div>
+          <div class="stat-item">
+            <h3>3+ роки</h3>
+            <p>Досвіду у робототехніці</p>
+          </div>
+          <div class="stat-item">
+            <h3>100%</h3>
+            <p>Власний C++ / Python код</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Interactive Board Preview -->
+      <div class="hero-visual">
+        <div class="hero-card-frame">
+          <div class="mcu-chip-container">
+            <div class="chip-header">
+              <span class="chip-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+                ESP32-WROOM-32 Core
+              </span>
+              <span class="chip-status"></span>
+            </div>
+
+            <div class="chip-diagram">
+              <div class="esp32-ic">
+                <div class="pin-row left">
+                  <div class="pin active"></div>
+                  <div class="pin"></div>
+                  <div class="pin active"></div>
+                  <div class="pin"></div>
+                  <div class="pin active"></div>
+                </div>
+                <div class="esp32-shield">
+                  ESP32
+                </div>
+                <div class="pin-row right">
+                  <div class="pin active"></div>
+                  <div class="pin active"></div>
+                  <div class="pin"></div>
+                  <div class="pin active"></div>
+                  <div class="pin"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chip-code-preview">
+              <div><span class="keyword">void</span> <span class="func">setup</span>() {</div>
+              <div>&nbsp;&nbsp;Serial.<span class="func">begin</span>(<span class="val">115200</span>);</div>
+              <div>&nbsp;&nbsp;pinMode(<span class="val">2</span>, OUTPUT); <span class="comment">// Built-in LED</span></div>
+              <div>}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT SECTION ==================== -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Про автора</span>
+        <h2 class="section-title"> захоплення &amp; Навчання</h2>
+        <p class="section-subtitle">
+          Поєднання знань із фізики, програмування та моделювання для створення розумної автоматики.
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <h3 style="font-size: 1.5rem; margin-bottom: 16px;" class="gradient-text">Артем</h3>
+          <p style="color: var(--text-muted); margin-bottom: 20px;">
+            Я учень 10 класу ліцею №141 «ОРТ» м. Києва. Моя пристрасть — це проектування апаратних систем, конструювання роботів та написання оптимізованого коду для мікроконтролерів.
+          </p>
+
+          <div class="about-info-list">
+            <div class="info-item">
+              <div class="info-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <div class="info-content">
+                <h4>Навчальний заклад</h4>
+                <p>НВК №141 «ОРТ» м. Києва (10 клас)</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <div class="info-content">
+                <h4>Основний напрямок</h4>
+                <p>Програмування мікроконтролерів (C++, MicroPython) та інженерна мехатроніка</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+              </div>
+              <div class="info-content">
+                <h4>Локація</h4>
+                <p>Київ, Україна</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="focus-cards">
+          <div class="focus-card">
+            <div class="focus-card-icon">⚡</div>
+            <div>
+              <h4 style="font-size: 1.1rem; margin-bottom: 6px;">Мікроконтролери &amp; Схемотехніка</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted);">
+                Розробка систем на базі ESP32, STM32 (ARM Cortex), Arduino. Робота з протоколами I2C, SPI, UART, PWM та шифруванням даних.
+              </p>
+            </div>
+          </div>
+
+          <div class="focus-card">
+            <div class="focus-card-icon">🤖</div>
+            <div>
+              <h4 style="font-size: 1.1rem; margin-bottom: 6px;">Мехатроніка &amp; 3D Моделювання</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted);">
+                Проектування корпусів та механізмів у CAD (Fusion 360), робота з драйверами крокових двигунів, PID-регуляторами та сервоприводами.
+              </p>
+            </div>
+          </div>
+
+          <div class="focus-card">
+            <div class="focus-card-icon">🌐</div>
+            <div>
+              <h4 style="font-size: 1.1rem; margin-bottom: 6px;">IoT &amp; Автоматизація</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted);">
+                Створення бездротових датчиків, MQTT телеметрії, розробка автономних розумних систем та інтеграція з Raspberry Pi.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROJECTS SECTION ==================== -->
+  <section id="projects" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Галерея робіт</span>
+        <h2 class="section-title">Практичні Проекти</h2>
+        <p class="section-subtitle">
+          Реалізовані апаратні пристрої, робототехнічні комплекси та розробки в сфері автоматизації.
+        </p>
+      </div>
+
+      <div class="projects-filter">
+        <button class="filter-btn active" data-filter="all">Всі проекти</button>
+        <button class="filter-btn" data-filter="iot">IoT &amp; Автоматизація</button>
+        <button class="filter-btn" data-filter="mechatronics">Мехатроніка</button>
+        <button class="filter-btn" data-filter="mcu">Мікроконтролери</button>
+      </div>
+
+      <div class="projects-grid" id="projects-container">
+        <!-- Projects dynamically populated by main.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== INTERACTIVE MCU SIMULATOR SECTION ==================== -->
+  <section id="simulator" class="section simulator-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Інтерактивна Лабораторія</span>
+        <h2 class="section-title">Веб-Симулятор ESP32</h2>
+        <p class="section-subtitle">
+          Попробовуйте протестувати віртуальну плату ESP32 у реальному часі: керуйте GPIO, аналоговим входом ADC та переглядайте UART-консоль.
+        </p>
+      </div>
+
+      <div class="simulator-wrapper">
+        <!-- MCU Board Emulator -->
+        <div class="sim-board">
+          <div class="sim-header">
+            <div class="sim-header-title">
+              <span style="display:inline-block; width:10px; height:10px; background:#00ff88; border-radius:50%; box-shadow: 0 0 10px #00ff88;"></span>
+              ESP32 hardware node: ONLINE
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">Clock: 240 MHz</span>
+          </div>
+
+          <div class="sim-controls">
+            <!-- GPIO 2 LED Control -->
+            <div class="control-group">
+              <div class="control-label">
+                <span>Digital Output (GPIO 2 - LED)</span>
+                <span class="val-badge" id="sim-led-status">LOW (OFF)</span>
+              </div>
+              <div class="switch-container">
+                <div class="toggle-switch" id="sim-led-toggle">
+                  <div class="toggle-knob"></div>
+                </div>
+                <div class="virtual-led" id="sim-virtual-led"></div>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Натисніть для перемикання</span>
+              </div>
+            </div>
+
+            <!-- DHT22 Sensor Slider -->
+            <div class="control-group">
+              <div class="control-label">
+                <span>DHT22 Датчик температури (GPIO 4)</span>
+                <span class="val-badge" id="sim-temp-val">24.5 °C</span>
+              </div>
+              <input type="range" min="10" max="45" value="24.5" step="0.5" class="sim-range" id="sim-temp-slider">
+            </div>
+
+            <!-- Potentiometer Slider -->
+            <div class="control-group">
+              <div class="control-label">
+                <span>Аналоговий потенціометр ADC (GPIO 34)</span>
+                <span class="val-badge"><span id="sim-pot-val">2048</span> (<span id="sim-pot-voltage">1.65V</span>)</span>
+              </div>
+              <input type="range" min="0" max="4095" value="2048" step="1" class="sim-range" id="sim-pot-slider">
+            </div>
+          </div>
+        </div>
+
+        <!-- Serial Terminal Output -->
+        <div class="sim-terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <span>UART Serial Monitor (115200 baud)</span>
+            <button id="sim-clear-term" style="color: var(--accent-cyan); font-size:0.75rem; cursor:pointer;">Очистити</button>
+          </div>
+          <div class="terminal-body" id="sim-terminal-body">
+            <!-- Log lines output via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SKILLS MATRIX SECTION ==================== -->
+  <section id="skills" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Компетенції</span>
+        <h2 class="section-title">Стек Навичок &amp; Інструменти</h2>
+        <p class="section-subtitle">
+          Технології та інженерні програмні пакети, якими я користуюся під час розробки пристроїв.
+        </p>
+      </div>
+
+      <div class="skills-grid">
+        <!-- Category 1 -->
+        <div class="skill-category">
+          <h3 class="category-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+            Мікроконтролери &amp; MCU
+          </h3>
+          <div class="skill-list">
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>ESP32 / ESP8266 (WiFi &amp; BT)</span>
+                <span>95%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="95"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>Arduino (Uno, Nano, Mega)</span>
+                <span>90%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="90"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>STM32 (ARM Cortex-M4)</span>
+                <span>75%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="75"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>Raspberry Pi &amp; Single-Board</span>
+                <span>80%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="80"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 2 -->
+        <div class="skill-category">
+          <h3 class="category-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Програмування &amp; Код
+          </h3>
+          <div class="skill-list">
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>C / C++ (Embedded, OOP)</span>
+                <span>90%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="90"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>Python / MicroPython</span>
+                <span>85%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="85"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>HTML5 / CSS3 / Vanilla JS</span>
+                <span>80%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="80"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>PlatformIO / Arduino IDE</span>
+                <span>90%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="90"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 3 -->
+        <div class="skill-category">
+          <h3 class="category-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            САПР &amp; 3D Проектування
+          </h3>
+          <div class="skill-list">
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>Autodesk Fusion 360 (CAD)</span>
+                <span>85%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="85"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>KiCad / EasyEDA (PCB Design)</span>
+                <span>80%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="80"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>3D Друк (FDM, Slicing)</span>
+                <span>88%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="88"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span>Протоколи: I2C, SPI, UART, MQTT</span>
+                <span>92%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-progress" data-level="92"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== EDUCATION SECTION ==================== -->
+  <section id="education" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Шлях розвитку</span>
+        <h2 class="section-title">Освіта та Досягнення</h2>
+        <p class="section-subtitle">
+          Мій навчальний процес, участь у олімпіадах та технічних проектах.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-date">2024 — Дотепер</div>
+            <h3 class="timeline-title">НВК №141 «ОРТ» м. Києва</h3>
+            <p class="timeline-subtitle">Учень 10 класу з поглибленим вивченням STEM та технологій</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              Активна участь у шкільних лабораторних проектах з мікроконтролерів, мехатроніки та робототехніки.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-date">2023 — 2024</div>
+            <h3 class="timeline-title">Олімпіади та Конкурси з Фізики &amp; Робототехніки</h3>
+            <p class="timeline-subtitle">Учасник та призер шкільних та міських заходів</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              Створення діючих макетів автоматизації, захист проектів розумного дому та автофіксації параметрів навколишнього середовища.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT SECTION ==================== -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Зв'язок</span>
+        <h2 class="section-title">Напишіть Мені</h2>
+        <p class="section-subtitle">
+          Маєте ідею проекту чи хочете обговорити співпрацю у сфері мехатроніки та мікроконтролерів?
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-card">
+            <div class="contact-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <h4 style="font-size: 1rem;">Розташування</h4>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">м. Київ, Україна (НВК №141 «ОРТ»)</p>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <h4 style="font-size: 1rem;">Електронна пошта</h4>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">artem.dev@ort141.kyiv.ua</p>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </div>
+            <div>
+              <h4 style="font-size: 1rem;">GitHub &amp; Код</h4>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">github.com/artem-ort141</p>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contact-form">
+          <div class="form-group">
+            <label class="form-label" for="form-name">Ваше Ім'я</label>
+            <input type="text" id="form-name" class="form-input" placeholder="Олександр" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-email">Електронна пошта</label>
+            <input type="email" id="form-email" class="form-input" placeholder="alex@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-message">Повідомлення</label>
+            <textarea id="form-message" class="form-textarea" placeholder="Опишіть ваше запитання чи проект..." required></textarea>
+          </div>
+
+          <div class="form-status" id="form-status"></div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            <span>Надіслати повідомлення</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROJECT DETAILS MODAL ==================== -->
+  <div class="modal-overlay" id="project-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="gradient-text" style="font-size: 1.25rem;">Специфікація Проекту</h3>
+        <button class="modal-close" id="modal-close" aria-label="Закрити">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Dynamic content via main.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <p>&copy; 2026 Артем • Портфоліо з мікроконтролерів, мехатроніки та автоматизації.</p>
+      <p style="font-size: 0.8rem; color: var(--text-dark);">
+        Розроблено на чистому HTML5, CSS3 та Vanilla JS для НВК №141 «ОРТ» м. Києва.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript File -->
+  <script src="js/main.js"></script>
+</body>
+</html>
