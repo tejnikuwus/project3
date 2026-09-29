@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0e17"/>
+      <stop offset="100%" stop-color="#121d2d"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#00ff88"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  
+  <!-- Grid Lines -->
+  <path d="M 50 350 L 750 350 M 50 250 L 750 250 M 50 150 L 750 150" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  
+  <!-- Scatter Data Points -->
+  <circle cx="120" cy="310" r="6" fill="#ff4d4d" opacity="0.6"/>
+  <circle cx="180" cy="280" r="6" fill="#ff4d4d" opacity="0.6"/>
+  <circle cx="240" cy="290" r="6" fill="#ff4d4d" opacity="0.6"/>
+  <circle cx="300" cy="230" r="6" fill="#ff4d4d" opacity="0.6"/>
+  <circle cx="380" cy="210" r="6" fill="#ff4d4d" opacity="0.6"/>
+  <circle cx="450" cy="180" r="6" fill="#ff4d4d" opacity="0.6"/>
+  <circle cx="520" cy="150" r="6" fill="#ff4d4d" opacity="0.6"/>
+  <circle cx="610" cy="120" r="6" fill="#ff4d4d" opacity="0.6"/>
+  <circle cx="680" cy="100" r="6" fill="#ff4d4d" opacity="0.6"/>
+
+  <!-- Regression Line -->
+  <line x1="80" y1="330" x2="720" y2="90" stroke="url(#lineGrad)" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- House Icon Overlay -->
+  <g transform="translate(620, 240) scale(1.5)">
+    <path d="M10 20 L25 5 L40 20 L40 40 L10 40 Z" fill="none" stroke="#00f2fe" stroke-width="2.5"/>
+    <rect x="20" y="25" width="10" height="15" fill="none" stroke="#00ff88" stroke-width="2"/>
+  </g>
+
+  <!-- Title Text -->
+  <text x="70" y="80" fill="#00f2fe" font-family="sans-serif" font-size="28" font-weight="bold">California Housing ML</text>
+  <text x="70" y="110" fill="#a0aec0" font-family="sans-serif" font-size="16">Linear Regression • stlite Wasm</text>
+</svg>

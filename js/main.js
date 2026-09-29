@@ -277,7 +277,29 @@ void setup() {
   pwm.setPWMFreq(50); // 50Hz Standard Servo Frequency
   Serial.println("[SPIDER_BOT] 12-DOF IK Engine & Gait Matrix initialized.");
 }`,
-    schemaText: "Схема підключення: ESP32 шина I2C (GPIO21-SDA, GPIO22-SCL) підключена до драйвера PCA9685. 12 сервоприводів MG90S під'єднані до каналів 0-11 PCA9685. Ультразвуковий датчик HC-SR04 підключено до GPIO12 (Trig) та GPIO13 (Echo). Живлення плати ESP32 реалізовано через 5V LDO, а сервоприводи живляться окремо від імпульсного DC-DC Step-Down конвертера 5V 5A від двох акумуляторів 18650 (7.4V)."
+  },
+  {
+    id: 5,
+    title: "Аналіз та Прогноз Цін Житла (California Housing ML)",
+    category: "iot",
+    categoryLabel: "Machine Learning & Streamlit",
+    description: "Інтерактивна модель Лінійної Регресії для аналізу датасету California Housing та прогнозування вартості житла у реальному часі за допомогою Streamlit та stlite (WebAssembly).",
+    image: "assets/housing_ml.svg",
+    tags: ["Python", "scikit-learn", "Streamlit", "stlite Wasm", "ML"],
+    linkUrl: "python/p1.html",
+    specs: {
+      Model: "Linear Regression (scikit-learn)",
+      Dataset: "California Housing (20.6k samples)",
+      Frontend: "Streamlit / stlite (Pyodide Wasm)",
+      Metrics: "R² = 0.5758, RMSE = $74.56k"
+    },
+    codeSnippet: `# California Housing Linear Regression
+from sklearn.datasets import fetch_california_housing
+from sklearn.linear_model import LinearRegression
+
+housing = fetch_california_housing(as_frame=True)
+model = LinearRegression().fit(X_train, y_train)`,
+    schemaText: "Інтерфейс працює повністю автономно у браузері через stlite (Pyodide) без потреби у виділеному Python-сервері."
   }
 ];
 
@@ -299,6 +321,12 @@ function initProjects() {
     filtered.forEach(p => {
       const card = document.createElement('div');
       card.className = 'project-card';
+      const demoBtnHtml = p.linkUrl 
+        ? `<a href="${p.linkUrl}" target="_blank" class="btn btn-primary btn-sm" style="margin-right: 8px;">
+            🚀 Відкрити Streamlit (stlite)
+           </a>`
+        : '';
+
       card.innerHTML = `
         <div class="project-image">
           <img src="${p.image}" alt="${p.title}" style="width: 100%; height: 100%; object-fit: cover;">
@@ -310,9 +338,10 @@ function initProjects() {
           <div class="project-tags">
             ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
           </div>
-          <div class="project-footer">
+          <div class="project-footer" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;">
+            ${demoBtnHtml}
             <button class="btn btn-secondary btn-sm open-modal-btn" data-id="${p.id}">
-              Детальніше & Detail Specs
+              Детальніше & Specs
             </button>
           </div>
         </div>

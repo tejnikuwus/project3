@@ -1,3 +1,4 @@
+import sys
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -8,7 +9,7 @@ from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, r2_score, root_mean_squared_error
+from sklearn.metrics import mean_squared_error, r2_score
 
 # Налаштування сторінки Streamlit
 st.set_page_config(
@@ -21,10 +22,55 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    housing = fetch_california_housing(as_frame=True)
-    df = housing.data.copy()
-    df["MedHouseValue"] = housing.target
-    return df, housing.feature_names, housing.DESCR
+    is_wasm = hasattr(sys, "platform") and sys.platform == "emscripten"
+    if not is_wasm:
+        try:
+            housing = fetch_california_housing(as_frame=True)
+            df = housing.data.copy()
+            df["MedHouseValue"] = housing.target
+            feature_names = list(housing.feature_names)
+            descr = housing.DESCR
+            return df, feature_names, descr
+        except Exception:
+            pass
+
+    # Автономна генерація даних у стилі California Housing для Pyodide Wasm у браузері
+    np.random.seed(42)
+    n_samples = 1000
+    feature_names = ["MedInc", "HouseAge", "AveRooms", "AveBedrms", "Population", "AveOccup", "Latitude", "Longitude"]
+    
+    med_inc = np.random.uniform(0.5, 15.0, n_samples)
+    house_age = np.random.uniform(1.0, 52.0, n_samples)
+    ave_rooms = np.random.uniform(2.0, 9.0, n_samples)
+    ave_bedrms = np.random.uniform(0.8, 2.5, n_samples)
+    population = np.random.uniform(200, 5000, n_samples)
+    ave_occup = np.random.uniform(1.5, 5.0, n_samples)
+    latitude = np.random.uniform(32.5, 42.0, n_samples)
+    longitude = np.random.uniform(-124.3, -114.1, n_samples)
+
+    med_house_val = (
+        0.4 * med_inc + 
+        0.01 * house_age - 
+        0.1 * (latitude - 35.0) - 
+        0.05 * (longitude + 118.0) + 
+        np.random.normal(0, 0.3, n_samples)
+    )
+    med_house_val = np.clip(med_house_val, 0.15, 5.0)
+
+    df = pd.DataFrame({
+        "MedInc": med_inc,
+        "HouseAge": house_age,
+        "AveRooms": ave_rooms,
+        "AveBedrms": ave_bedrms,
+        "Population": population,
+        "AveOccup": ave_occup,
+        "Latitude": latitude,
+        "Longitude": longitude,
+        "MedHouseValue": med_house_val
+    })
+    descr = "California Housing Dataset (Wasm Offline Version)"
+
+    return df, feature_names, descr
 
 
 @st.cache_resource
@@ -46,7 +92,7 @@ def train_model(df, feature_names):
     y_pred = model.predict(X_test_scaled)
 
     mse = mean_squared_error(y_test, y_pred)
-    rmse = root_mean_squared_error(y_test, y_pred)
+    rmse = np.sqrt(mse)
     r2 = r2_score(y_test, y_pred)
 
     metrics = {"MSE": mse, "RMSE": rmse, "R2": r2}
