@@ -3,44 +3,203 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>California Housing — stlite Streamlit App</title>
+  <title>California Housing — Поліноміальна Регресія та Аналіз Перенавчання | Артем</title>
+  <meta name="description" content="Практична робота: поліноміальна регресія, вибір ступеня моделі, аналітичні формули коефіцієнтів, порівняння Train/Test MSE та аналіз перенавчання (Overfitting). Автор: Артем (НВК №141 «ОРТ»).">
+  <meta name="author" content="Артем">
+  <meta name="theme-color" content="#0a0e17">
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.73.0/build/stlite.css" />
   <style>
+    :root {
+      --bg-dark: #0a0e17;
+      --card-bg: #111827;
+      --accent-cyan: #00f2fe;
+      --accent-green: #00ff88;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
+      min-height: 100%;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
+    #top-nav {
+      background: rgba(10, 14, 23, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    #top-nav a.back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-cyan);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 8px;
+      background: rgba(0, 242, 254, 0.08);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      transition: all 0.2s ease;
+    }
+    #top-nav a.back-btn:hover {
+      background: rgba(0, 242, 254, 0.18);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.35);
+      color: #ffffff;
+      transform: translateX(-2px);
+    }
+    .author-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+    }
     #root {
-      height: 100vh;
+      min-height: calc(100vh - 54px);
+    }
+    #loading-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 54px);
+      text-align: center;
+      padding: 30px 20px;
+    }
+    .spinner-ring {
+      width: 54px;
+      height: 54px;
+      border: 3px solid rgba(0, 242, 254, 0.15);
+      border-top-color: var(--accent-cyan);
+      border-radius: 50%;
+      animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+      margin-bottom: 24px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .loading-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 480px;
+      line-height: 1.5;
+    }
+    .loading-steps {
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: #64748b;
+      font-family: monospace;
     }
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <!-- Навігаційна панель із посиланням на головний сайт-портфоліо -->
+  <header id="top-nav">
+    <a href="../index.html" class="back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      ← До портфоліо Артема
+    </a>
+    <div class="author-badge">
+      <span class="badge-dot"></span>
+      <span>Артем • НВК №141 «ОРТ» м. Києва (10 клас)</span>
+    </div>
+  </header>
+
+  <!-- Індикатор початкового завантаження Wasm -->
+  <div id="loading-screen">
+    <div class="spinner-ring"></div>
+    <div class="loading-title">Ініціалізація Python середовища (Pyodide Wasm)...</div>
+    <p class="loading-desc">
+      Завантажується Python 3.12, scikit-learn, pandas, matplotlib та датасет California Housing прямо у вашому браузері.
+    </p>
+    <div class="loading-steps">
+      ⚡ Автономне виконання у браузері без окремого серверу
+    </div>
+  </div>
+
+  <div id="root" style="display: none;"></div>
+
   <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.73.0/build/stlite.js"></script>
   <script>
-    // Динамічне завантаження коду з файлу p1.py без дублювання та зашитого коду
-    fetch("p1.py")
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Не вдалося завантажити p1.py");
-        }
-        return response.text();
-      })
-      .then(pyCode => {
-        stlite.mount({
-          requirements: ["scikit-learn", "pandas", "matplotlib", "seaborn"],
-          entrypoint: "p1.py",
-          files: {
-            "p1.py": pyCode
-          }
-        }, document.getElementById("root"));
-      })
-      .catch(err => {
-        console.error("Помилка завантаження p1.py:", err);
-      });
+    // Завантаження коду p1.py та підготовленого датасету california_housing.csv
+    Promise.all([
+      fetch("p1.py").then(res => {
+        if (!res.ok) throw new Error("Не вдалося завантажити python/p1.py (код помилки " + res.status + ")");
+        return res.text();
+      }),
+      fetch("california_housing.csv")
+        .then(res => res.ok ? res.text() : "")
+        .catch(() => "")
+    ])
+    .then(([pyCode, csvContent]) => {
+      const filesMap = {
+        "p1.py": pyCode
+      };
+
+      if (csvContent && csvContent.trim().length > 0) {
+        filesMap["california_housing.csv"] = csvContent;
+      }
+
+      const rootElement = document.getElementById("root");
+      stlite.mount({
+        requirements: ["scikit-learn", "pandas", "matplotlib", "seaborn"],
+        entrypoint: "p1.py",
+        files: filesMap
+      }, rootElement);
+
+      const loader = document.getElementById("loading-screen");
+      if (loader) loader.style.display = "none";
+      rootElement.style.display = "block";
+    })
+    .catch(err => {
+      console.error("Помилка ініціалізації stlite:", err);
+      const loader = document.getElementById("loading-screen");
+      if (loader) {
+        loader.innerHTML = `
+          <div style="color: #ef4444; text-align: center; max-width: 500px;">
+            <h3 style="margin-bottom: 10px;">Помилка запуску Python додатку</h3>
+            <p style="font-size: 0.9rem; color: #cbd5e1;">${err.message}</p>
+            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 15px;">
+              Спробуйте оновити сторінку або перевірте інтернет-з'єднання для завантаження бібліотек stlite.
+            </p>
+          </div>
+        `;
+      }
+    });
   </script>
 </body>
 </html>

@@ -280,26 +280,33 @@ void setup() {
   },
   {
     id: 5,
-    title: "Аналіз та Прогноз Цін Житла (California Housing ML)",
-    category: "iot",
-    categoryLabel: "Machine Learning & Streamlit",
-    description: "Інтерактивна модель Лінійної Регресії для аналізу датасету California Housing та прогнозування вартості житла у реальному часі за допомогою Streamlit та stlite (WebAssembly).",
+    title: "Поліноміальна Регресія та Аналіз Перенавчання (California Housing ML)",
+    category: "ml",
+    categoryLabel: "Machine Learning & Wasm",
+    description: "Інтерактивне дослідження лінійної та поліноміальної регресії: вибір ступеня моделей (повзунки), аналітичні формули ŷ = b₀ + b₁x + ... + bₖxᵏ, порівняння Train/Test MSE та аналіз перенавчання (Overfitting) у середовищі Streamlit stlite.",
     image: "assets/housing_ml.svg",
-    tags: ["Python", "scikit-learn", "Streamlit", "stlite Wasm", "ML"],
+    tags: ["Python", "scikit-learn", "Polynomial Regression", "Overfitting", "Streamlit", "stlite Wasm"],
     linkUrl: "python/p1.html",
     specs: {
-      Model: "Linear Regression (scikit-learn)",
-      Dataset: "California Housing (20.6k samples)",
-      Frontend: "Streamlit / stlite (Pyodide Wasm)",
-      Metrics: "R² = 0.5758, RMSE = $74.56k"
+      "Моделі": "Лінійна (ступінь 1) та Поліноміальна (ступінь k)",
+      "Формула": "ŷ = b₀ + b₁x + b₂x² + ... + bₖxᵏ",
+      "Ознака / Ціль": "MedInc (дохід) → MedHouseValue (вартість житла)",
+      "Оцінка": "Окремий розрахунок Train MSE та Test MSE",
+      "Платформа": "Streamlit у Pyodide Wasm (без серверу)"
     },
-    codeSnippet: `# California Housing Linear Regression
-from sklearn.datasets import fetch_california_housing
+    codeSnippet: `# Поліноміальна регресія та оцінка перенавчання
+from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 
-housing = fetch_california_housing(as_frame=True)
-model = LinearRegression().fit(X_train, y_train)`,
-    schemaText: "Інтерфейс працює повністю автономно у браузері через stlite (Pyodide) без потреби у виділеному Python-сервері."
+poly = PolynomialFeatures(degree=k, include_bias=False)
+X_train_poly = poly.fit_transform(X_train)
+X_test_poly = poly.transform(X_test)
+
+model = LinearRegression().fit(X_train_poly, y_train)
+train_mse = mean_squared_error(y_train, model.predict(X_train_poly))
+test_mse = mean_squared_error(y_test, model.predict(X_test_poly))`,
+    schemaText: "Обидві моделі навчаються виключно на Train вибірці та оцінюються на однакових тестових спостереженнях для об'єктивного виявлення перенавчання."
   }
 ];
 
