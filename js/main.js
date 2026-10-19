@@ -25,7 +25,7 @@ function initNavbar() {
     } else {
       navbar.classList.remove('scrolled');
     }
-    
+
     // Highlight active link based on scroll position
     let current = '';
     const sections = document.querySelectorAll('section');
@@ -228,55 +228,21 @@ void setup() {
   },
   {
     id: 4,
-    title: "12-DOF Автономний Робот-павук на ESP32",
+    title: "12-DOF Автономний Робот-павук на Raspberry Pi CM5",
     category: "mechatronics",
     categoryLabel: "Мехатроніка",
     description: "Шагаючий робот-павук (Quadruped / Hexapod) з 12 ступенями свободи, інверсною кінематикою (Inverse Kinematics), керуванням по Wi-Fi/Bluetooth та автоматичним обходом перешкод.",
     image: "assets/spider_robot.svg",
-    tags: ["ESP32", "12-DOF Servos", "Inverse Kinematics", "PCA9685", "C++", "3D Printing"],
+    tags: ["Raspberry Pi", "12-DOF Servos", "Inverse Kinematics", "PCA9685", "C++", "3D Printing"],
     specs: {
-      MCU: "ESP32-WROOM-32 (Dual Core 240MHz)",
-      ServoDriver: "PCA9685 16-Ch 12-Bit I2C PWM Controller",
-      Actuators: "12x MG90S Metal Gear Micro Servos",
+      MCU: "Raspberry Pi CM5",
+      ServoDriver: "3x PCA9685 16-Ch 12-Bit I2C PWM Controller",
+      Actuators: "12x MG996R Metal Gear  Servos",
       Sensors: "HC-SR04 Ultrasonic Sensor + MPU6050 IMU Gyro",
-      Power: "2x 18650 Li-Ion (7.4V) with 5V 5A DC-DC Buck Converter",
+      Power: "Li-ion 12v 5V 5A DC-DC Buck Converter",
       GaitEngine: "Tripod & Wave Gait IK Engine (C++)"
     },
-    codeSnippet: `// ESP32 Spider Robot 12-DOF Inverse Kinematics Engine
-#include <Wire.h>
-#include <Adafruit_PWMServoDriver.h>
-
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-
-#define FEMUR_LENGTH  45.0f // mm
-#define TIBIA_LENGTH  75.0f // mm
-
-// Leg Joint Angles computation using Inverse Kinematics
-void computeLegIK(uint8_t legIndex, float x, float y, float z) {
-  float L = sqrt(x*x + y*y);
-  float d = sqrt((L - 15.0f)*(L - 15.0f) + z*z);
-  
-  // Calculate Coxa, Femur & Tibia Angles
-  float coxaAngle  = atan2(y, x) * 180.0f / M_PI;
-  float alpha      = atan2(z, L - 15.0f);
-  float beta       = acos((FEMUR_LENGTH*FEMUR_LENGTH + d*d - TIBIA_LENGTH*TIBIA_LENGTH) / (2 * FEMUR_LENGTH * d));
-  float femurAngle = (alpha + beta) * 180.0f / M_PI;
-  
-  // Update PCA9685 Servo PWM Output
-  uint16_t pulseCoxa  = map(coxaAngle,  -90, 90, 150, 600);
-  uint16_t pulseFemur = map(femurAngle, -90, 90, 150, 600);
-  
-  pwm.setPWM(legIndex * 3 + 0, 0, pulseCoxa);
-  pwm.setPWM(legIndex * 3 + 1, 0, pulseFemur);
-}
-
-void setup() {
-  Serial.begin(115200);
-  Wire.begin(21, 22); // I2C SDA=21, SCL=22
-  pwm.begin();
-  pwm.setPWMFreq(50); // 50Hz Standard Servo Frequency
-  Serial.println("[SPIDER_BOT] 12-DOF IK Engine & Gait Matrix initialized.");
-}`,
+    codeSnippet: `secret`,
   },
   {
     id: 5,
@@ -321,14 +287,14 @@ function initProjects() {
 
   function renderProjects(filter = 'all') {
     container.innerHTML = '';
-    const filtered = filter === 'all' 
-      ? projectsData 
+    const filtered = filter === 'all'
+      ? projectsData
       : projectsData.filter(p => p.category === filter);
 
     filtered.forEach(p => {
       const card = document.createElement('div');
       card.className = 'project-card';
-      const demoBtnHtml = p.linkUrl 
+      const demoBtnHtml = p.linkUrl
         ? `<a href="${p.linkUrl}" target="_blank" class="btn btn-primary btn-sm" style="margin-right: 8px;">
             🚀 Відкрити Streamlit (stlite)
            </a>`
@@ -451,14 +417,14 @@ function initSimulator() {
   const ledToggle = document.getElementById('sim-led-toggle');
   const ledVisual = document.getElementById('sim-virtual-led');
   const ledStatusText = document.getElementById('sim-led-status');
-  
+
   const tempSlider = document.getElementById('sim-temp-slider');
   const tempVal = document.getElementById('sim-temp-val');
-  
+
   const potSlider = document.getElementById('sim-pot-slider');
   const potVal = document.getElementById('sim-pot-val');
   const potVoltage = document.getElementById('sim-pot-voltage');
-  
+
   const terminalBody = document.getElementById('sim-terminal-body');
   const clearTermBtn = document.getElementById('sim-clear-term');
 
@@ -467,7 +433,7 @@ function initSimulator() {
   function appendLog(message, type = 'info') {
     const now = new Date();
     const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
-    
+
     const line = document.createElement('div');
     line.className = 'log-line';
     line.innerHTML = `
@@ -537,7 +503,7 @@ function initContactForm() {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     const name = document.getElementById('form-name').value.trim();
     const email = document.getElementById('form-email').value.trim();
     const message = document.getElementById('form-message').value.trim();
@@ -569,7 +535,7 @@ function initScrollAnimations() {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('animate-in');
-        
+
         // If intersecting skills section, trigger skill bar progress width
         if (entry.target.classList.contains('skills-grid')) {
           document.querySelectorAll('.skill-progress').forEach(bar => {
