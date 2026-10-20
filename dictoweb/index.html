@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,22 +42,26 @@
             width: 6px;
             height: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: #0f172a;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #334155;
             border-radius: 3px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #475569;
         }
-        
+
         /* Dropdown animation */
         .dropdown-menu {
             transform-origin: top right;
             transition: opacity 0.15s ease-out, transform 0.15s ease-out;
         }
+
         .dropdown-menu.hidden {
             opacity: 0;
             transform: scale(0.95);
@@ -64,7 +69,9 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col selection:bg-indigo-500 selection:text-white">
+
+<body
+    class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col selection:bg-indigo-500 selection:text-white">
 
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
@@ -73,36 +80,48 @@
     <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-6 py-3.5">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <a href="../index.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-xs font-semibold text-slate-300 hover:text-white transition" title="Повернутися на сайт портфоліо">
-                    <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <a href="../index.html"
+                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-xs font-semibold text-slate-300 hover:text-white transition"
+                    title="Повернутися на сайт портфоліо">
+                    <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
                     <span class="hidden sm:inline">← Портфоліо</span>
                 </a>
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z">
+                        </path>
                     </svg>
                 </div>
                 <div>
                     <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-                        DictoWeb <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 font-medium border border-indigo-500/30">Pro Audio</span>
+                        DictoWeb <span
+                            class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 font-medium border border-indigo-500/30">Pro
+                            Audio</span>
                     </h1>
-                    <p class="text-xs text-slate-400" id="header-subtitle">Професійний веб-диктофон з експортом у MP3, WAV, WebM</p>
+                    <p class="text-xs text-slate-400" id="header-subtitle">Професійний веб-диктофон з експортом у MP3,
+                        WAV, WebM</p>
                 </div>
             </div>
-            
+
             <div class="flex items-center gap-3">
                 <!-- Language Toggle Button -->
-                <button id="btn-lang-toggle" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-xs font-semibold text-slate-300 transition">
-                    <span id="lang-flag">🇷🇺</span>
-                    <span id="lang-text">RU</span>
+                <button id="btn-lang-toggle"
+                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-xs font-semibold text-slate-300 transition">
+                    <span id="lang-flag">🇺🇦</span>
+                    <span id="lang-text">UA</span>
                 </button>
 
                 <!-- Status Badge -->
-                <div id="status-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/90 border border-slate-700/60 text-xs font-medium text-slate-300">
+                <div id="status-badge"
+                    class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/90 border border-slate-700/60 text-xs font-medium text-slate-300">
                     <span class="w-2 h-2 rounded-full bg-emerald-500" id="status-dot"></span>
-                    <span id="status-text">Готов к записи</span>
+                    <span id="status-text">Готовий до запису</span>
                 </div>
             </div>
         </div>
@@ -110,29 +129,36 @@
 
     <!-- Main Content Layout -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
+
         <!-- Left Column: Controls, Visualizer & Format Settings (7 cols) -->
         <div class="lg:col-span-7 flex flex-col gap-6">
-            
+
             <!-- Microphone Selector Card -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
                 <div class="flex items-center justify-between mb-3">
                     <label for="mic-select" class="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-12 7.5a6 6 0 016-6v-1.5m-6 7.5h12M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"></path>
+                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 18.75a6 6 0 006-6v-1.5m-12 7.5a6 6 0 016-6v-1.5m-6 7.5h12M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z">
+                            </path>
                         </svg>
-                        <span id="label-mic-select">Микрофон (Устройство ввода)</span>
+                        <span id="label-mic-select">Мікрофон (Пристрій введення)</span>
                     </label>
-                    <button id="refresh-devices" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition flex items-center gap-1">
+                    <button id="refresh-devices"
+                        class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition flex items-center gap-1">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M4 4v 5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
                         </svg>
-                        <span id="text-refresh-mics">Обновить</span>
+                        <span id="text-refresh-mics">Оновити</span>
                     </button>
                 </div>
                 <div class="relative">
-                    <select id="mic-select" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition appearance-none cursor-pointer">
-                        <option value="">Системный микрофон по умолчанию</option>
+                    <select id="mic-select"
+                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition appearance-none cursor-pointer">
+                        <option value="">Системний мікрофон за замовчуванням</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -146,17 +172,22 @@
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center">
+                        <div
+                            class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                             </svg>
                         </div>
                         <div>
-                            <h2 class="text-sm font-semibold text-white" id="title-format-settings">Формат сохранения по умолчанию</h2>
-                            <p class="text-[11px] text-slate-400" id="desc-format-settings">Выберите предпочтительный формат для скачивания записей</p>
+                            <h2 class="text-sm font-semibold text-white" id="title-format-settings">Формат збереження за
+                                замовчуванням</h2>
+                            <p class="text-[11px] text-slate-400" id="desc-format-settings">Виберіть бажаний формат для
+                                скачування записів</p>
                         </div>
                     </div>
-                    <span id="format-badge-pill" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold">
+                    <span id="format-badge-pill"
+                        class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold">
                         MP3 • 192 kbps
                     </span>
                 </div>
@@ -164,67 +195,95 @@
                 <!-- Format Selection Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-3.5">
                     <!-- MP3 Option -->
-                    <button type="button" data-format="mp3" class="format-option-btn relative p-3 rounded-xl border border-indigo-500 bg-indigo-950/40 text-left transition hover:border-indigo-400 flex flex-col justify-between group">
+                    <button type="button" data-format="mp3"
+                        class="format-option-btn relative p-3 rounded-xl border border-indigo-500 bg-indigo-950/40 text-left transition hover:border-indigo-400 flex flex-col justify-between group">
                         <div class="flex items-center justify-between mb-1">
                             <span class="text-sm font-bold text-white group-hover:text-indigo-200">MP3</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/30 text-indigo-300 font-semibold uppercase">Хит</span>
+                            <span
+                                class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/30 text-indigo-300 font-semibold uppercase">Хит</span>
                         </div>
-                        <span class="text-[11px] text-slate-400 font-mono">~1.4 МБ/мин</span>
+                        <span class="text-[11px] text-slate-400 font-mono">~1.4 МБ/хв</span>
                         <div class="format-check-icon absolute top-2 right-2 text-indigo-400">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
                         </div>
                     </button>
 
                     <!-- WAV Option -->
-                    <button type="button" data-format="wav" class="format-option-btn relative p-3 rounded-xl border border-slate-800 bg-slate-950/40 text-left transition hover:border-slate-700 flex flex-col justify-between group">
+                    <button type="button" data-format="wav"
+                        class="format-option-btn relative p-3 rounded-xl border border-slate-800 bg-slate-950/40 text-left transition hover:border-slate-700 flex flex-col justify-between group">
                         <div class="flex items-center justify-between mb-1">
                             <span class="text-sm font-bold text-slate-300 group-hover:text-white">WAV</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold uppercase">Lossless</span>
+                            <span
+                                class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold uppercase">Lossless</span>
                         </div>
                         <span class="text-[11px] text-slate-500 font-mono">16-bit PCM</span>
                         <div class="format-check-icon hidden absolute top-2 right-2 text-emerald-400">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
                         </div>
                     </button>
 
                     <!-- WebM Option -->
-                    <button type="button" data-format="webm" class="format-option-btn relative p-3 rounded-xl border border-slate-800 bg-slate-950/40 text-left transition hover:border-slate-700 flex flex-col justify-between group">
+                    <button type="button" data-format="webm"
+                        class="format-option-btn relative p-3 rounded-xl border border-slate-800 bg-slate-950/40 text-left transition hover:border-slate-700 flex flex-col justify-between group">
                         <div class="flex items-center justify-between mb-1">
                             <span class="text-sm font-bold text-slate-300 group-hover:text-white">WebM</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-semibold uppercase">Opus</span>
+                            <span
+                                class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-semibold uppercase">Opus</span>
                         </div>
-                        <span class="text-[11px] text-slate-500 font-mono">~0.5 МБ/мин</span>
+                        <span class="text-[11px] text-slate-500 font-mono">~0.5 МБ/хв</span>
                         <div class="format-check-icon hidden absolute top-2 right-2 text-cyan-400">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
                         </div>
                     </button>
 
                     <!-- OGG Option -->
-                    <button type="button" data-format="ogg" class="format-option-btn relative p-3 rounded-xl border border-slate-800 bg-slate-950/40 text-left transition hover:border-slate-700 flex flex-col justify-between group">
+                    <button type="button" data-format="ogg"
+                        class="format-option-btn relative p-3 rounded-xl border border-slate-800 bg-slate-950/40 text-left transition hover:border-slate-700 flex flex-col justify-between group">
                         <div class="flex items-center justify-between mb-1">
                             <span class="text-sm font-bold text-slate-300 group-hover:text-white">OGG</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-400 font-semibold uppercase">Audio</span>
+                            <span
+                                class="text-[10px] px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-400 font-semibold uppercase">Audio</span>
                         </div>
-                        <span class="text-[11px] text-slate-500 font-mono">~0.8 МБ/мин</span>
+                        <span class="text-[11px] text-slate-500 font-mono">~0.8 МБ/хв</span>
                         <div class="format-check-icon hidden absolute top-2 right-2 text-violet-400">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
                         </div>
                     </button>
                 </div>
 
                 <!-- Format Details Sub-panel -->
-                <div class="bg-slate-950/60 rounded-xl p-3 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div
+                    class="bg-slate-950/60 rounded-xl p-3 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                     <!-- Dynamic Description -->
                     <div class="flex items-center gap-2 text-slate-300">
                         <span class="text-base" id="format-desc-icon">🎵</span>
-                        <span id="format-dynamic-desc">MP3: Универсальный формат. Воспроизводится на ПК, смартфонах, в авто и мессенджерах.</span>
+                        <span id="format-dynamic-desc">MP3: Универсальный формат. Відтворюється на ПК, смартфонах, в
+                            авто і месенджерах.</span>
                     </div>
 
                     <!-- MP3 Bitrate Selector (Visible when MP3 is selected) -->
                     <div id="mp3-bitrate-container" class="flex items-center gap-2 shrink-0">
-                        <label for="mp3-bitrate" class="text-slate-400 text-[11px] font-medium" id="label-bitrate">Битрейт:</label>
-                        <select id="mp3-bitrate" class="bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500">
-                            <option value="128">128 kbps (Речь)</option>
+                        <label for="mp3-bitrate" class="text-slate-400 text-[11px] font-medium"
+                            id="label-bitrate">Бітрейт:</label>
+                        <select id="mp3-bitrate"
+                            class="bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500">
+                            <option value="128">128 kbps (Мова)</option>
                             <option value="192" selected>192 kbps (Стандарт HQ)</option>
                             <option value="320">320 kbps (Максимум)</option>
                         </select>
@@ -233,58 +292,83 @@
             </div>
 
             <!-- Visualizer & Timer Card -->
-            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm flex flex-col items-center justify-between relative overflow-hidden min-h-[290px]">
+            <div
+                class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm flex flex-col items-center justify-between relative overflow-hidden min-h-[290px]">
                 <!-- Background glow effect -->
-                <div class="absolute -top-24 -left-24 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-violet-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div
+                    class="absolute -top-24 -left-24 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none">
+                </div>
+                <div
+                    class="absolute -bottom-24 -right-24 w-48 h-48 bg-violet-600/10 rounded-full blur-3xl pointer-events-none">
+                </div>
 
                 <!-- Timer display -->
                 <div class="text-center z-10 w-full">
-                    <span class="text-xs uppercase tracking-widest font-semibold text-slate-400 mb-1 block" id="text-timer-title">Длительность записи</span>
-                    <div id="timer-display" class="text-5xl sm:text-6xl font-mono font-bold tracking-tight text-white drop-shadow-md">00:00</div>
+                    <span class="text-xs uppercase tracking-widest font-semibold text-slate-400 mb-1 block"
+                        id="text-timer-title">Тривалість запису</span>
+                    <div id="timer-display"
+                        class="text-5xl sm:text-6xl font-mono font-bold tracking-tight text-white drop-shadow-md">00:00
+                    </div>
                 </div>
 
                 <!-- Canvas Visualizer -->
-                <div class="w-full h-32 my-4 relative z-10 bg-slate-950/60 rounded-xl border border-slate-800/60 overflow-hidden flex items-center justify-center">
+                <div
+                    class="w-full h-32 my-4 relative z-10 bg-slate-950/60 rounded-xl border border-slate-800/60 overflow-hidden flex items-center justify-center">
                     <canvas id="visualizer" class="w-full h-full"></canvas>
-                    <div id="visualizer-placeholder" class="absolute text-xs text-slate-500 font-medium text-center px-4">
-                        Звуковая волна появится здесь во время записи
+                    <div id="visualizer-placeholder"
+                        class="absolute text-xs text-slate-500 font-medium text-center px-4">
+                        Звукова хвиля з'явиться тут під час запису
                     </div>
                 </div>
 
                 <!-- Recording Controls Bar -->
                 <div class="flex items-center justify-center gap-4 z-10 w-full">
                     <!-- Record / Start Button -->
-                    <button id="btn-record" class="group relative flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white shadow-lg shadow-rose-600/30 transition-all transform hover:scale-105 active:scale-95 focus:outline-none">
+                    <button id="btn-record"
+                        class="group relative flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white shadow-lg shadow-rose-600/30 transition-all transform hover:scale-105 active:scale-95 focus:outline-none">
                         <span class="w-6 h-6 rounded-full bg-white group-hover:scale-95 transition"></span>
-                        <span class="absolute -bottom-7 text-xs font-medium text-slate-400 whitespace-nowrap" id="btn-record-label">Запись</span>
+                        <span class="absolute -bottom-7 text-xs font-medium text-slate-400 whitespace-nowrap"
+                            id="btn-record-label">Запись</span>
                     </button>
 
                     <!-- Pause / Resume Button -->
-                    <button id="btn-pause" disabled class="flex items-center justify-center w-12 h-12 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700/80 transition shadow-md" title="Пауза / Продолжить">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" id="pause-icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <button id="btn-pause" disabled
+                        class="flex items-center justify-center w-12 h-12 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700/80 transition shadow-md"
+                        title="Пауза / Продолжить">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                            id="pause-icon">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </button>
 
                     <!-- Stop Button -->
-                    <button id="btn-stop" disabled class="group relative flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700/80 text-white shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none" title="Остановить и сохранить">
+                    <button id="btn-stop" disabled
+                        class="group relative flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700/80 text-white shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none"
+                        title="Остановить и сохранить">
                         <span class="w-6 h-6 rounded bg-rose-500 group-hover:bg-rose-400 transition"></span>
-                        <span class="absolute -bottom-7 text-xs font-medium text-slate-400 whitespace-nowrap" id="btn-stop-label">Стоп</span>
+                        <span class="absolute -bottom-7 text-xs font-medium text-slate-400 whitespace-nowrap"
+                            id="btn-stop-label">Стоп</span>
                     </button>
                 </div>
             </div>
 
             <!-- Settings / Info Card -->
-            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-sm text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div
+                class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-sm text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div class="flex items-center gap-2">
-                    <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span id="info-storage-text">Конвертация выполняется прямо в вашем браузере. Файлы можно скачивать в MP3, WAV, WebM или OGG в любой момент.</span>
+                    <span id="info-storage-text">Конвертація виконується прямо в вашому браузері. Файли можна скачувати
+                        в MP3, WAV, WebM або OGG в будь-який момент.</span>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
-                    <span class="px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[11px]" id="info-engine-badge">Аудиодвижок: WebAudio + LAME</span>
+                    <span
+                        class="px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[11px]"
+                        id="info-engine-badge">Аудіодвигун: WebAudio + LAME</span>
                 </div>
             </div>
 
@@ -292,28 +376,38 @@
 
         <!-- Right Column: Recording History & Audio Player (5 cols) -->
         <div class="lg:col-span-5 flex flex-col">
-            
-            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm flex flex-col h-full min-h-[560px]">
-                
+
+            <div
+                class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm flex flex-col h-full min-h-[560px]">
+
                 <!-- History Header -->
                 <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
                     <div class="flex items-center gap-2">
                         <h2 class="text-base font-semibold text-white flex items-center gap-2" id="title-history">
-                            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                </path>
                             </svg>
                             <span>История записей</span>
                         </h2>
-                        <span id="recording-count" class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 font-semibold border border-indigo-500/20">0 записей</span>
+                        <span id="recording-count"
+                            class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 font-semibold border border-indigo-500/20">0
+                            записей</span>
                     </div>
 
                     <!-- History Actions (Export all / Clear) -->
                     <div class="flex items-center gap-2" id="history-batch-actions" style="display: none;">
-                        <button id="btn-export-all" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition flex items-center gap-1 px-2 py-1 rounded bg-indigo-500/10 border border-indigo-500/20" title="Скачать все записи в текущем формате">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        <button id="btn-export-all"
+                            class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition flex items-center gap-1 px-2 py-1 rounded bg-indigo-500/10 border border-indigo-500/20"
+                            title="Скачать все записи в текущем формате">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                             </svg>
-                            <span id="text-export-all">Скачать все</span>
+                            <span id="text-export-all">Завантажити все</span>
                         </button>
                     </div>
                 </div>
@@ -321,61 +415,93 @@
                 <!-- Recordings List Container -->
                 <div id="recordings-list" class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3 max-h-[580px]">
                     <!-- Empty State -->
-                    <div id="empty-state" class="flex flex-col items-center justify-center h-full text-center py-16 text-slate-500">
-                        <div class="w-16 h-16 rounded-full bg-slate-800/60 border border-slate-700/60 flex items-center justify-center mb-3 text-slate-400">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+                    <div id="empty-state"
+                        class="flex flex-col items-center justify-center h-full text-center py-16 text-slate-500">
+                        <div
+                            class="w-16 h-16 rounded-full bg-slate-800/60 border border-slate-700/60 flex items-center justify-center mb-3 text-slate-400">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z">
+                                </path>
                             </svg>
                         </div>
-                        <p class="text-sm font-medium text-slate-300" id="empty-state-title">Записей пока нет</p>
-                        <p class="text-xs text-slate-500 mt-1 max-w-[240px]" id="empty-state-desc">Нажмите кнопку записи, чтобы записать звук с микрофона и сохранить в любом формате.</p>
+                        <p class="text-sm font-medium text-slate-300" id="empty-state-title">Записів поки немає</p>
+                        <p class="text-xs text-slate-500 mt-1 max-w-[240px]" id="empty-state-desc">Натисніть кнопку
+                            запису, щоб записати звук з мікрофона і зберегти в будь-якому форматі.</p>
                     </div>
                 </div>
 
                 <!-- Advanced Built-in Audio Player Footer preview for active selected recording -->
-                <div id="active-player-container" class="hidden mt-4 pt-4 border-t border-slate-800 bg-slate-950/70 p-4 rounded-xl border border-slate-800/90 shadow-lg">
+                <div id="active-player-container"
+                    class="hidden mt-4 pt-4 border-t border-slate-800 bg-slate-950/70 p-4 rounded-xl border border-slate-800/90 shadow-lg">
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2 overflow-hidden">
                             <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-                            <span id="now-playing-title" class="text-xs font-semibold text-white truncate max-w-[200px]">Сейчас играет</span>
-                            <span id="now-playing-format-tag" class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">MP3</span>
+                            <span id="now-playing-title"
+                                class="text-xs font-semibold text-white truncate max-w-[200px]">Сейчас играет</span>
+                            <span id="now-playing-format-tag"
+                                class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">MP3</span>
                         </div>
-                        <button id="close-player" class="text-slate-400 hover:text-slate-200 text-xs px-2 py-0.5 rounded hover:bg-slate-800 transition">✕ Закрыть</button>
+                        <button id="close-player"
+                            class="text-slate-400 hover:text-slate-200 text-xs px-2 py-0.5 rounded hover:bg-slate-800 transition">✕
+                            Закрыть</button>
                     </div>
 
                     <!-- Custom Timeline Scrubber -->
                     <div class="flex items-center gap-2 my-2">
-                        <span id="player-current-time" class="text-[11px] font-mono text-slate-400 min-w-[34px]">00:00</span>
-                        <input id="player-seek" type="range" min="0" max="100" value="0" step="0.1" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
-                        <span id="player-duration" class="text-[11px] font-mono text-slate-400 min-w-[34px]">00:00</span>
+                        <span id="player-current-time"
+                            class="text-[11px] font-mono text-slate-400 min-w-[34px]">00:00</span>
+                        <input id="player-seek" type="range" min="0" max="100" value="0" step="0.1"
+                            class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                        <span id="player-duration"
+                            class="text-[11px] font-mono text-slate-400 min-w-[34px]">00:00</span>
                     </div>
 
                     <!-- Player Controls Bar -->
                     <div class="flex items-center justify-between pt-1">
                         <div class="flex items-center gap-1.5">
                             <!-- Skip -5s -->
-                            <button id="btn-player-rewind" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs" title="Назад на 5 сек">
+                            <button id="btn-player-rewind"
+                                class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs"
+                                title="Назад на 5 сек">
                                 ↺ -5s
                             </button>
                             <!-- Play / Pause -->
-                            <button id="btn-player-play-pause" class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm">
+                            <button id="btn-player-play-pause"
+                                class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm">
                                 <svg class="w-4 h-4" id="player-play-icon" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                                        clip-rule="evenodd"></path>
                                 </svg>
                             </button>
                             <!-- Skip +5s -->
-                            <button id="btn-player-forward" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs" title="Вперед на 5 сек">
+                            <button id="btn-player-forward"
+                                class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs"
+                                title="Вперед на 5 сек">
                                 +5s ↻
                             </button>
                         </div>
 
                         <!-- Speed Controls -->
-                        <div class="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-[11px]">
-                            <button class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition" data-speed="0.75">0.75x</button>
-                            <button class="player-speed-btn px-1.5 py-0.5 rounded bg-indigo-600 text-white font-semibold" data-speed="1.0">1x</button>
-                            <button class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition" data-speed="1.25">1.25x</button>
-                            <button class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition" data-speed="1.5">1.5x</button>
-                            <button class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition" data-speed="2.0">2x</button>
+                        <div
+                            class="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-[11px]">
+                            <button
+                                class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition"
+                                data-speed="0.75">0.75x</button>
+                            <button
+                                class="player-speed-btn px-1.5 py-0.5 rounded bg-indigo-600 text-white font-semibold"
+                                data-speed="1.0">1x</button>
+                            <button
+                                class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition"
+                                data-speed="1.25">1.25x</button>
+                            <button
+                                class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition"
+                                data-speed="1.5">1.5x</button>
+                            <button
+                                class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition"
+                                data-speed="2.0">2x</button>
                         </div>
                     </div>
 
@@ -391,7 +517,8 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500 mt-auto">
-        <p id="footer-text">VoiceFlow Studio &bull; Высокоточная запись звука с конвертацией в MP3, WAV, WebM &bull; Работает локально в браузере</p>
+        <p id="footer-text">VoiceFlow Studio &bull; Високоточний запис звуку з конвертацією в MP3, WAV, WebM &bull;
+            Працює локально в браузері</p>
     </footer>
 
     <!-- JavaScript Application Logic -->
@@ -399,54 +526,54 @@
         // Localization Dictionary
         const i18n = {
             ru: {
-                subtitle: 'Профессиональный веб-диктофон с экспортом в MP3, WAV, WebM',
-                ready: 'Готов к записи',
-                recording: 'Идет запись...',
-                paused: 'Запись на паузе',
-                micSelect: 'Микрофон (Устройство ввода)',
-                refresh: 'Обновить',
-                defaultMic: 'Системный микрофон по умолчанию',
-                formatSettingsTitle: 'Формат сохранения по умолчанию',
-                formatSettingsDesc: 'Выберите предпочтительный формат для скачивания записей',
-                bitrateLabel: 'Битрейт:',
-                bitrateVoice: '128 kbps (Речь)',
+                subtitle: 'Професійний веб-диктофон з експортом в MP3, WAV, WebM',
+                ready: 'Готов до запису',
+                recording: 'Йде запис...',
+                paused: 'Запис на паузі',
+                micSelect: 'Мікрофон (Пристрій вводу)',
+                refresh: 'Оновити',
+                defaultMic: 'Системний мікрофон за замовчуванням',
+                formatSettingsTitle: 'Формат збереження за замовчуванням',
+                formatSettingsDesc: 'Виберіть бажаний формат для скачування записів',
+                bitrateLabel: 'Бітрейт:',
+                bitrateVoice: '128 kbps (Мова)',
                 bitrateStandard: '192 kbps (Стандарт HQ)',
                 bitrateMax: '320 kbps (Максимум)',
-                timerTitle: 'Длительность записи',
-                visualizerPlaceholder: 'Звуковая волна появится здесь во время записи',
-                record: 'Запись',
+                timerTitle: 'Тривалість запису',
+                visualizerPlaceholder: 'Звукова хвиля з\'явиться тут під час запису',
+                record: 'Запис',
                 stop: 'Стоп',
-                storageInfo: 'Конвертация выполняется прямо в вашем браузере. Файлы можно скачивать в MP3, WAV, WebM или OGG в любой момент.',
-                engineBadge: 'Аудиодвижок: WebAudio + LAME',
-                historyTitle: 'История записей',
-                recordingsCount: 'записей',
-                recordingSingle: 'запись',
+                storageInfo: 'Конвертація виконується прямо в вашому браузері. Файли можна скачувати в MP3, WAV, WebM або OGG в будь-який момент.',
+                engineBadge: 'Аудіодвигун: WebAudio + LAME',
+                historyTitle: 'Історія записів',
+                recordingsCount: 'записів',
+                recordingSingle: 'запис',
                 recordingsFew: 'записи',
-                exportAll: 'Скачать все',
-                emptyTitle: 'Записей пока нет',
-                emptyDesc: 'Нажмите кнопку записи, чтобы записать звук с микрофона и сохранить в любом формате.',
-                play: 'Слушать',
-                download: 'Скачать',
-                saveAs: 'Другие форматы',
-                rename: 'Переименовать',
-                delete: 'Удалить',
-                converting: 'Конвертация...',
-                nowPlaying: 'Сейчас играет',
-                close: '✕ Закрыть',
-                footer: 'VoiceFlow Studio • Высокоточная запись звука с конвертацией в MP3, WAV, WebM • Работает локально в браузере',
-                formatDescMp3: 'MP3: Универсальный формат. Воспроизводится на ПК, смартфонах, в авто и мессенджерах.',
-                formatDescWav: 'WAV: Студийный несжатый 16-бит PCM. Идеально для монтажа и Whisper AI.',
-                formatDescWebm: 'WebM: Высокоэффективный кодек Opus. Минимальный размер файла.',
-                formatDescOgg: 'OGG: Открытый аудиоконтейнер, популярен в свободном ПО.',
-                toastRecStarted: 'Запись звука началась',
-                toastRecStopped: 'Запись сохранена в историю',
-                toastRecPaused: 'Запись приостановлена',
-                toastRecResumed: 'Запись возобновлена',
-                toastConverting: 'Конвертация в формат',
-                toastReady: 'Файл успешно подготовлен и скачивается',
-                toastDeleted: 'Запись удалена',
-                toastRenamed: 'Название записи обновлено',
-                enterNamePrompt: 'Введите новое имя записи:'
+                exportAll: 'Завантажити все',
+                emptyTitle: 'Записів поки немає',
+                emptyDesc: 'Натисніть кнопку запису, щоб записати звук з мікрофона і зберегти в будь-якому форматі.',
+                play: 'Слухати',
+                download: 'Завантажити',
+                saveAs: 'Інші формати',
+                rename: 'Перейменувати',
+                delete: 'Видалити',
+                converting: 'Конвертація...',
+                nowPlaying: 'Зараз грає',
+                close: '✕ Закрити',
+                footer: 'VoiceFlow Studio • Високоточний запис звуку з конвертацією в MP3, WAV, WebM • Працює локально в браузері',
+                formatDescMp3: 'MP3: Універсальний формат. Відтворюється на ПК, смартфонах, в авто та месенджерах.',
+                formatDescWav: 'WAV: Студійний нестиснутий 16-біт PCM. Ідеально для монтажу та Whisper AI.',
+                formatDescWebm: 'WebM: Високоефективний кодек Opus. Мінімальний розмір файлу.',
+                formatDescOgg: 'OGG: Відкритий аудіоконтейнер, популярний у вільному ПЗ.',
+                toastRecStarted: 'Запис звуку почався',
+                toastRecStopped: 'Запис збережено в історію',
+                toastRecPaused: 'Запис призупинено',
+                toastRecResumed: 'Запис відновлено',
+                toastConverting: 'Конвертація в формат',
+                toastReady: 'Файл успішно підготовлений і скачується',
+                toastDeleted: 'Запис видалено',
+                toastRenamed: 'Назва запису оновлено',
+                enterNamePrompt: 'Введіть нове ім\'я запису:'
             },
             en: {
                 subtitle: 'High-fidelity web dictaphone with MP3, WAV, WebM export',
@@ -612,21 +739,21 @@
             const dataSize = buffer.length * blockAlign;
             const headerSize = 44;
             const totalSize = headerSize + dataSize;
-            
+
             const arrayBuffer = new ArrayBuffer(totalSize);
             const view = new DataView(arrayBuffer);
-            
+
             function writeString(offset, string) {
                 for (let i = 0; i < string.length; i++) {
                     view.setUint8(offset + i, string.charCodeAt(i));
                 }
             }
-            
+
             // RIFF Chunk Descriptor
             writeString(0, 'RIFF');
             view.setUint32(4, 36 + dataSize, true);
             writeString(8, 'WAVE');
-            
+
             // 'fmt ' Sub-chunk
             writeString(12, 'fmt ');
             view.setUint32(16, 16, true); // 16 for PCM
@@ -636,18 +763,18 @@
             view.setUint32(28, byteRate, true);
             view.setUint16(32, blockAlign, true);
             view.setUint16(34, bitDepth, true);
-            
+
             // 'data' Sub-chunk
             writeString(36, 'data');
             view.setUint32(40, dataSize, true);
-            
+
             // Interleave samples
             let offset = 44;
             const channels = [];
             for (let i = 0; i < numChannels; i++) {
                 channels.push(buffer.getChannelData(i));
             }
-            
+
             for (let i = 0; i < buffer.length; i++) {
                 for (let ch = 0; ch < numChannels; ch++) {
                     let sample = channels[ch][i];
@@ -659,7 +786,7 @@
                     offset += 2;
                 }
             }
-            
+
             return new Blob([view], { type: 'audio/wav' });
         }
 
@@ -668,15 +795,15 @@
          */
         async function audioBufferToMp3(buffer, kbps = 192) {
             if (typeof lamejs === 'undefined') {
-                throw new Error('Модуль MP3 еще загружается. Попробуйте снова через секунду или скачайте WAV.');
+                throw new Error('Модуль MP3 ще завантажується. Спробуйте знову через секунду або скачайте WAV.');
             }
-            
+
             const numChannels = Math.min(buffer.numberOfChannels, 2);
             const sampleRate = buffer.sampleRate;
             const mp3encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, kbps);
             const mp3Data = [];
             const sampleBlockSize = 1152;
-            
+
             if (numChannels === 1) {
                 const samples = buffer.getChannelData(0);
                 const len = samples.length;
@@ -685,7 +812,7 @@
                     let s = Math.max(-1, Math.min(1, samples[i]));
                     int16Samples[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
                 }
-                
+
                 for (let i = 0; i < len; i += sampleBlockSize) {
                     const chunk = int16Samples.subarray(i, i + sampleBlockSize);
                     const mp3buf = mp3encoder.encodeBuffer(chunk);
@@ -699,14 +826,14 @@
                 const len = left.length;
                 const leftInt16 = new Int16Array(len);
                 const rightInt16 = new Int16Array(len);
-                
+
                 for (let i = 0; i < len; i++) {
                     let l = Math.max(-1, Math.min(1, left[i]));
                     let r = Math.max(-1, Math.min(1, right[i]));
                     leftInt16[i] = l < 0 ? l * 0x8000 : l * 0x7FFF;
                     rightInt16[i] = r < 0 ? r * 0x8000 : r * 0x7FFF;
                 }
-                
+
                 for (let i = 0; i < len; i += sampleBlockSize) {
                     const leftChunk = leftInt16.subarray(i, i + sampleBlockSize);
                     const rightChunk = rightInt16.subarray(i, i + sampleBlockSize);
@@ -716,12 +843,12 @@
                     }
                 }
             }
-            
+
             const endBuf = mp3encoder.flush();
             if (endBuf.length > 0) {
                 mp3Data.push(endBuf);
             }
-            
+
             return new Blob(mp3Data, { type: 'audio/mp3' });
         }
 
@@ -782,7 +909,7 @@
         /**
          * Main export function for a recording
          */
-        window.exportRecording = async function(id, formatToUse = null, btnElement = null) {
+        window.exportRecording = async function (id, formatToUse = null, btnElement = null) {
             const rec = recordings.find(r => r.id === id);
             if (!rec) return;
 
@@ -812,12 +939,12 @@
                 const blob = await getRecordingBlobForFormat(rec, format);
                 const safeName = (rec.name || 'Recording').trim().replace(/[\/\\?%*:|"<>]/g, '_');
                 const filename = `${safeName}.${format}`;
-                
+
                 triggerDownload(blob, filename);
                 showToast(`${formatLabels[format]}: ${i18n[currentLang].toastReady}`, 'success');
             } catch (err) {
                 console.error('Export error:', err);
-                showToast(`Ошибка экспорта: ${err.message}`, 'error');
+                showToast(`Помилка експорту: ${err.message}`, 'error');
             } finally {
                 if (btnElement && origHtml) {
                     btnElement.disabled = false;
@@ -842,18 +969,18 @@
 
                 micSelect.innerHTML = `<option value="">${i18n[currentLang].defaultMic}</option>`;
                 if (audioInputs.length === 0) {
-                    showToast('Микрофоны не обнаружены.', 'error');
+                    showToast('Мікрофони не обнаружены.', 'error');
                 } else {
                     audioInputs.forEach((device, index) => {
                         const option = document.createElement('option');
                         option.value = device.deviceId;
-                        option.text = device.label || `Микрофон ${index + 1}`;
+                        option.text = device.label || `Мікрофон ${index + 1}`;
                         micSelect.appendChild(option);
                     });
                 }
             } catch (err) {
                 console.error('Error accessing microphones:', err);
-                showToast('Доступ к микрофону заблокирован или недоступен.', 'error');
+                showToast('Доступ до мікрофона заблоковано або недоступний.', 'error');
             }
         }
 
@@ -968,7 +1095,7 @@
 
             try {
                 audioStream = await navigator.mediaDevices.getUserMedia(constraints);
-                
+
                 let options = { mimeType: 'audio/webm;codecs=opus' };
                 if (!MediaRecorder.isTypeSupported(options.mimeType)) {
                     options = { mimeType: 'audio/webm' };
@@ -1005,7 +1132,7 @@
 
             } catch (err) {
                 console.error('Failed to start recording:', err);
-                showToast('Не удалось запустить запись с микрофона.', 'error');
+                showToast('Не вдалося запустити запис з мікрофона.', 'error');
             }
         }
 
@@ -1067,9 +1194,9 @@
             const timestamp = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             const datestamp = date.toLocaleDateString();
             const durationFormatted = timerDisplay.textContent;
-            
-            const recName = currentLang === 'ru' 
-                ? `Запись ${recordings.length + 1}` 
+
+            const recName = currentLang === 'ru'
+                ? `Запис ${recordings.length + 1}`
                 : `Recording ${recordings.length + 1}`;
 
             const recordingItem = {
@@ -1096,7 +1223,7 @@
             const countText = currentLang === 'ru'
                 ? `${count} ${count === 1 ? i18n.ru.recordingSingle : (count >= 2 && count <= 4 ? i18n.ru.recordingsFew : i18n.ru.recordingsCount)}`
                 : `${count} ${count === 1 ? i18n.en.recordingSingle : i18n.en.recordingsCount}`;
-            
+
             recordingCount.textContent = countText;
 
             if (count === 0) {
@@ -1220,7 +1347,7 @@
                                         WebM Audio
                                         <span class="text-[9px] px-1 rounded bg-cyan-500/30 text-cyan-300">Opus</span>
                                     </div>
-                                    <div class="text-[10px] text-slate-400">Исходный компактный</div>
+                                    <div class="text-[10px] text-slate-400">Вихідний компактний</div>
                                 </div>
                             </div>
                             <span class="text-[11px] font-mono text-slate-500 group-hover:text-cyan-400">.webm</span>
@@ -1231,7 +1358,7 @@
                                 <span class="text-sm">📻</span>
                                 <div>
                                     <div class="font-semibold">OGG Audio</div>
-                                    <div class="text-[10px] text-slate-400">Открытый формат</div>
+                                    <div class="text-[10px] text-slate-400">Відкритий формат</div>
                                 </div>
                             </div>
                             <span class="text-[11px] font-mono text-slate-500 group-hover:text-violet-400">.ogg</span>
@@ -1243,7 +1370,7 @@
         }
 
         // Toggle format menu for a specific recording card
-        window.toggleFormatMenu = function(id, event) {
+        window.toggleFormatMenu = function (id, event) {
             event.stopPropagation();
             const menu = document.getElementById(`format-menu-${id}`);
             if (!menu) return;
@@ -1264,7 +1391,7 @@
         });
 
         // Rename recording
-        window.renameRecording = function(id) {
+        window.renameRecording = function (id) {
             const rec = recordings.find(r => r.id === id);
             if (!rec) return;
 
@@ -1280,7 +1407,7 @@
         };
 
         // Delete recording
-        window.deleteRecording = function(id) {
+        window.deleteRecording = function (id) {
             const index = recordings.findIndex(r => r.id === id);
             if (index !== -1) {
                 URL.revokeObjectURL(recordings[index].url);
@@ -1308,7 +1435,7 @@
         // ADVANCED AUDIO PLAYER
         // ==========================================
 
-        window.playRecording = function(id) {
+        window.playRecording = function (id) {
             const rec = recordings.find(r => r.id === id);
             if (!rec) return;
 
@@ -1346,7 +1473,7 @@
                 const current = audioPlayer.currentTime;
                 const total = audioPlayer.duration;
                 playerSeek.value = (current / total) * 100;
-                
+
                 const curM = Math.floor(current / 60).toString().padStart(2, '0');
                 const curS = Math.floor(current % 60).toString().padStart(2, '0');
                 playerCurrentTime.textContent = `${curM}:${curS}`;
@@ -1404,12 +1531,12 @@
 
         function setFormat(format) {
             defaultFormat = format;
-            
+
             // Update format option buttons styling
             document.querySelectorAll('.format-option-btn').forEach(btn => {
                 const isSelected = btn.dataset.format === format;
                 const checkIcon = btn.querySelector('.format-check-icon');
-                
+
                 if (isSelected) {
                     btn.classList.add('border-indigo-500', 'bg-indigo-950/40');
                     btn.classList.remove('border-slate-800', 'bg-slate-950/40');
@@ -1516,7 +1643,7 @@
         // Event Listeners for Recording Controls
         refreshDevicesBtn.addEventListener('click', () => {
             loadMicrophones();
-            showToast(currentLang === 'ru' ? 'Список микрофонов обновлен' : 'Microphone list refreshed', 'info');
+            showToast(currentLang === 'ru' ? 'Список мікрофонів оновлено' : 'Microphones list refreshed', 'info');
         });
 
         btnRecord.addEventListener('click', startRecording);
@@ -1527,14 +1654,15 @@
         window.addEventListener('load', () => {
             // Auto detect language from browser if preferred
             const browserLang = (navigator.language || '').toLowerCase();
-            if (browserLang.startsWith('ru')) {
-                currentLang = 'ru';
+            if (browserLang.startsWith('ua')) {
+                currentLang = 'ua';
             } else {
-                currentLang = 'ru'; // Default to Russian as requested by user
+                currentLang = 'ua'; // Default to Ukrainian as requested by user
             }
             applyLanguage(currentLang);
             loadMicrophones();
         });
     </script>
 </body>
+
 </html>
