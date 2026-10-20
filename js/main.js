@@ -338,69 +338,6 @@ model = LinearRegression().fit(X_train_poly, y_train)
 train_mse = mean_squared_error(y_train, model.predict(X_train_poly))
 test_mse = mean_squared_error(y_test, model.predict(X_test_poly))`,
     schemaText: "Обидві моделі навчаються виключно на Train вибірці та оцінюються на однакових тестових спостереженнях для об'єктивного виявлення перенавчання."
-  },
-  {
-    id: 6,
-    title: "DictoWeb — Студійний Веб-диктофон & Аудіоконвертер",
-    category: "audio",
-    categoryLabel: "Web Audio & DSP",
-    description: "Сучасний клієнтський веб-диктофон з апаратним вибором мікрофонів, інтерактивним осцилографом (Web Audio API AnalyserNode 60 FPS) у реальному часі, розширеним плеєром та конвертацією записів у формати MP3 (lamejs), 16-bit PCM WAV, WebM та OGG прямо в браузері без серверної частини.",
-    image: "assets/dictoweb.svg",
-    tags: ["Web Audio API", "DSP", "AudioContext", "lamejs", "WAV PCM", "Canvas API", "Vanilla JS", "MediaStream"],
-    linkUrl: "dictoweb/index.html",
-    btnText: "🎙️ Відкрити DictoWeb",
-    specs: {
-      "Аудіо ядро": "Web Audio API (AudioContext, AnalyserNode, MediaStreamTrack)",
-      "Формати експорту": "MP3 (128 / 192 / 320 kbps lamejs), WAV (16-bit PCM RIFF), WebM (Opus), OGG",
-      "Візуалізація": "HTML5 Canvas Real-Time Waveform & Oscilloscope 60 FPS",
-      "Архітектура": "100% Client-side (Zero-backend, повна конфіденційність аудіо)",
-      "Можливості плеєра": "Швидкість 0.75x–2.0x, стрибки ±5с, керування гучністю, перейменування записів"
-    },
-    codeSnippet: `// Web Audio API: Конвертація AudioBuffer у студійний 16-bit WAV (PCM RIFF)
-function audioBufferToWav(buffer) {
-  const numChannels = buffer.numberOfChannels;
-  const sampleRate = buffer.sampleRate;
-  const format = 1; // 1 = PCM
-  const bitDepth = 16;
-  
-  const bytesPerSample = bitDepth / 8;
-  const blockAlign = numChannels * bytesPerSample;
-  const dataLength = buffer.length * blockAlign;
-  const bufferLength = 44 + dataLength;
-  
-  const arrayBuffer = new ArrayBuffer(bufferLength);
-  const view = new DataView(arrayBuffer);
-  
-  // RIFF chunk descriptor
-  writeString(view, 0, 'RIFF');
-  view.setUint32(4, 36 + dataLength, true);
-  writeString(view, 8, 'WAVE');
-  // FMT sub-chunk
-  writeString(view, 12, 'fmt ');
-  view.setUint32(16, 16, true);
-  view.setUint16(20, format, true);
-  view.setUint16(22, numChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * blockAlign, true);
-  view.setUint16(32, blockAlign, true);
-  view.setUint16(34, bitDepth, true);
-  // DATA sub-chunk
-  writeString(view, 36, 'data');
-  view.setUint32(40, dataLength, true);
-  
-  // Interleave channels & write 16-bit signed PCM
-  let offset = 44;
-  for (let i = 0; i < buffer.length; i++) {
-    for (let ch = 0; ch < numChannels; ch++) {
-      let sample = buffer.getChannelData(ch)[i];
-      sample = Math.max(-1, Math.min(1, sample));
-      view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
-      offset += 2;
-    }
-  }
-  return new Blob([view], { type: 'audio/wav' });
-}`,
-    schemaText: "Аудіо-пайплайн: Мікрофон (getUserMedia) -> MediaStreamSource -> AnalyserNode (Canvas 60 FPS) -> MediaRecorder (Opus) -> In-Memory Decoder -> WAV / MP3 (lamejs) / OGG Exporter."
   }
 ];
 
