@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ua" class="dark">
 
 <head>
@@ -273,8 +273,7 @@
                     <!-- Dynamic Description -->
                     <div class="flex items-center gap-2 text-slate-300">
                         <span class="text-base" id="format-desc-icon">🎵</span>
-                        <span id="format-dynamic-desc">MP3: Универсальный формат. Відтворюється на ПК, смартфонах, в
-                            авто і месенджерах.</span>
+                        <span id="format-dynamic-desc">MP3: Універсальний формат. Відтворюється на ПК, смартфонах, в авто та месенджерах.</span>
                     </div>
 
                     <!-- MP3 Bitrate Selector (Visible when MP3 is selected) -->
@@ -328,13 +327,13 @@
                         class="group relative flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white shadow-lg shadow-rose-600/30 transition-all transform hover:scale-105 active:scale-95 focus:outline-none">
                         <span class="w-6 h-6 rounded-full bg-white group-hover:scale-95 transition"></span>
                         <span class="absolute -bottom-7 text-xs font-medium text-slate-400 whitespace-nowrap"
-                            id="btn-record-label">Запись</span>
+                            id="btn-record-label">Запис</span>
                     </button>
 
                     <!-- Pause / Resume Button -->
                     <button id="btn-pause" disabled
                         class="flex items-center justify-center w-12 h-12 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700/80 transition shadow-md"
-                        title="Пауза / Продолжить">
+                        title="Пауза / Продовжити">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
                             id="pause-icon">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -345,7 +344,7 @@
                     <!-- Stop Button -->
                     <button id="btn-stop" disabled
                         class="group relative flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700/80 text-white shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none"
-                        title="Остановить и сохранить">
+                        title="Зупинити і зберегти">
                         <span class="w-6 h-6 rounded bg-rose-500 group-hover:bg-rose-400 transition"></span>
                         <span class="absolute -bottom-7 text-xs font-medium text-slate-400 whitespace-nowrap"
                             id="btn-stop-label">Стоп</span>
@@ -390,18 +389,18 @@
                                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
                                 </path>
                             </svg>
-                            <span>История записей</span>
+                            <span>Історія записів</span>
                         </h2>
                         <span id="recording-count"
                             class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 font-semibold border border-indigo-500/20">0
-                            записей</span>
+                            записів</span>
                     </div>
 
                     <!-- History Actions (Export all / Clear) -->
                     <div class="flex items-center gap-2" id="history-batch-actions" style="display: none;">
                         <button id="btn-export-all"
                             class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition flex items-center gap-1 px-2 py-1 rounded bg-indigo-500/10 border border-indigo-500/20"
-                            title="Скачать все записи в текущем формате">
+                            title="Завантажити всі записи в поточному форматі">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -439,13 +438,12 @@
                         <div class="flex items-center gap-2 overflow-hidden">
                             <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
                             <span id="now-playing-title"
-                                class="text-xs font-semibold text-white truncate max-w-[200px]">Сейчас играет</span>
+                                class="text-xs font-semibold text-white truncate max-w-[200px]">Зараз грає</span>
                             <span id="now-playing-format-tag"
                                 class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">MP3</span>
                         </div>
                         <button id="close-player"
-                            class="text-slate-400 hover:text-slate-200 text-xs px-2 py-0.5 rounded hover:bg-slate-800 transition">✕
-                            Закрыть</button>
+                            class="text-slate-400 hover:text-slate-200 text-xs px-2 py-0.5 rounded hover:bg-slate-800 transition">✕ Закрити</button>
                     </div>
 
                     <!-- Custom Timeline Scrubber -->
@@ -517,24 +515,24 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500 mt-auto">
-        <p id="footer-text">VoiceFlow Studio &bull; Високоточний запис звуку з конвертацією в MP3, WAV, WebM &bull;
-            Працює локально в браузері</p>
+        <p id="footer-text">DictoWeb &bull; Ð’Ð¸ÑÐ¾ÐºÐ¾Ñ‚Ð¾Ñ‡Ð½Ð¸Ð¹ Ð·Ð°Ð¿Ð¸Ñ Ð·Ð²ÑƒÐºÑƒ Ð· ÐºÐ¾Ð½Ð²ÐµÑ€Ñ‚Ð°Ñ†Ñ–Ñ”ÑŽ Ñƒ MP3, WAV, WebM &bull;
+            ÐŸÑ€Ð°Ñ†ÑŽÑ” Ð»Ð¾ÐºÐ°Ð»ÑŒÐ½Ð¾ Ð² Ð±Ñ€Ð°ÑƒÐ·ÐµÑ€Ñ–</p>
     </footer>
 
     <!-- JavaScript Application Logic -->
     <script>
         // Localization Dictionary
         const i18n = {
-            ru: {
-                subtitle: 'Професійний веб-диктофон з експортом в MP3, WAV, WebM',
-                ready: 'Готов до запису',
-                recording: 'Йде запис...',
+            ua: {
+                subtitle: 'Професійний веб-диктофон з експортом у MP3, WAV, WebM',
+                ready: 'Готовий до запису',
+                recording: 'Іде запис...',
                 paused: 'Запис на паузі',
-                micSelect: 'Мікрофон (Пристрій вводу)',
+                micSelect: 'Мікрофон (Пристрій введення)',
                 refresh: 'Оновити',
                 defaultMic: 'Системний мікрофон за замовчуванням',
                 formatSettingsTitle: 'Формат збереження за замовчуванням',
-                formatSettingsDesc: 'Виберіть бажаний формат для скачування записів',
+                formatSettingsDesc: 'Виберіть бажаний формат для завантаження записів',
                 bitrateLabel: 'Бітрейт:',
                 bitrateVoice: '128 kbps (Мова)',
                 bitrateStandard: '192 kbps (Стандарт HQ)',
@@ -543,7 +541,7 @@
                 visualizerPlaceholder: 'Звукова хвиля з\'явиться тут під час запису',
                 record: 'Запис',
                 stop: 'Стоп',
-                storageInfo: 'Конвертація виконується прямо в вашому браузері. Файли можна скачувати в MP3, WAV, WebM або OGG в будь-який момент.',
+                storageInfo: 'Конвертація виконується прямо у вашому браузері. Файли можна завантажити у форматах MP3, WAV, WebM або OGG у будь-який момент.',
                 engineBadge: 'Аудіодвигун: WebAudio + LAME',
                 historyTitle: 'Історія записів',
                 recordingsCount: 'записів',
@@ -551,7 +549,7 @@
                 recordingsFew: 'записи',
                 exportAll: 'Завантажити все',
                 emptyTitle: 'Записів поки немає',
-                emptyDesc: 'Натисніть кнопку запису, щоб записати звук з мікрофона і зберегти в будь-якому форматі.',
+                emptyDesc: 'Натисніть кнопку запису, щоб записати звук з мікрофона і зберегти у будь-якому форматі.',
                 play: 'Слухати',
                 download: 'Завантажити',
                 saveAs: 'Інші формати',
@@ -560,20 +558,20 @@
                 converting: 'Конвертація...',
                 nowPlaying: 'Зараз грає',
                 close: '✕ Закрити',
-                footer: 'VoiceFlow Studio • Високоточний запис звуку з конвертацією в MP3, WAV, WebM • Працює локально в браузері',
+                footer: 'DictoWeb • Високоточний запис звуку з конвертацією у MP3, WAV, WebM • Працює локально в браузері',
                 formatDescMp3: 'MP3: Універсальний формат. Відтворюється на ПК, смартфонах, в авто та месенджерах.',
                 formatDescWav: 'WAV: Студійний нестиснутий 16-біт PCM. Ідеально для монтажу та Whisper AI.',
                 formatDescWebm: 'WebM: Високоефективний кодек Opus. Мінімальний розмір файлу.',
                 formatDescOgg: 'OGG: Відкритий аудіоконтейнер, популярний у вільному ПЗ.',
-                toastRecStarted: 'Запис звуку почався',
+                toastRecStarted: 'Запис звуку розпочато',
                 toastRecStopped: 'Запис збережено в історію',
                 toastRecPaused: 'Запис призупинено',
                 toastRecResumed: 'Запис відновлено',
-                toastConverting: 'Конвертація в формат',
-                toastReady: 'Файл успішно підготовлений і скачується',
+                toastConverting: 'Конвертація у формат',
+                toastReady: 'Файл успішно підготовлено та завантажується',
                 toastDeleted: 'Запис видалено',
-                toastRenamed: 'Назва запису оновлено',
-                enterNamePrompt: 'Введіть нове ім\'я запису:'
+                toastRenamed: 'Назву запису оновлено',
+                enterNamePrompt: 'Введіть нову назву запису:'
             },
             en: {
                 subtitle: 'High-fidelity web dictaphone with MP3, WAV, WebM export',
@@ -610,7 +608,7 @@
                 converting: 'Converting...',
                 nowPlaying: 'Now Playing',
                 close: '✕ Close',
-                footer: 'VoiceFlow Studio • High-fidelity audio recording with MP3, WAV, WebM export • Browser local',
+                footer: 'DictoWeb • High-fidelity audio recording with MP3, WAV, WebM export • Browser local',
                 formatDescMp3: 'MP3: Universal compressed audio. Plays everywhere (smartphones, cars, PC, messengers).',
                 formatDescWav: 'WAV: Studio lossless 16-bit PCM. Ideal for audio editing and Whisper AI.',
                 formatDescWebm: 'WebM: High-efficiency Opus codec. Lowest file size for web archiving.',
@@ -627,7 +625,7 @@
             }
         };
 
-        let currentLang = 'ua'; // Default to Russian as requested by user
+        let currentLang = 'ua'; // Default to Ukrainian
 
         // Global Format State
         let defaultFormat = 'mp3'; // 'mp3', 'wav', 'webm', 'ogg'
@@ -969,7 +967,7 @@
 
                 micSelect.innerHTML = `<option value="">${i18n[currentLang].defaultMic}</option>`;
                 if (audioInputs.length === 0) {
-                    showToast('Мікрофони не обнаружены.', 'error');
+                    showToast('Мікрофони не знайдено.', 'error');
                 } else {
                     audioInputs.forEach((device, index) => {
                         const option = document.createElement('option');
@@ -1195,9 +1193,9 @@
             const datestamp = date.toLocaleDateString();
             const durationFormatted = timerDisplay.textContent;
 
-            const recName = currentLang === 'ua'
-                ? `Запис ${recordings.length + 1}`
-                : `Recording ${recordings.length + 1}`;
+            const recName = currentLang === 'en'
+                ? `Recording ${recordings.length + 1}`
+                : `Запис ${recordings.length + 1}`;
 
             const recordingItem = {
                 id: 'rec_' + Date.now(),
@@ -1220,9 +1218,9 @@
 
         function renderRecordingsList() {
             const count = recordings.length;
-            const countText = currentLang === 'ua'
-                ? `${count} ${count === 1 ? i18n.ua.recordingSingle : (count >= 2 && count <= 4 ? i18n.ru.recordingsFew : i18n.ru.recordingsCount)}`
-                : `${count} ${count === 1 ? i18n.en.recordingSingle : i18n.en.recordingsCount}`;
+            const countText = currentLang === 'en'
+                ? `${count} ${count === 1 ? i18n.en.recordingSingle : i18n.en.recordingsCount}`
+                : `${count} ${count === 1 ? i18n.ua.recordingSingle : (count >= 2 && count <= 4 ? i18n.ua.recordingsFew : i18n.ua.recordingsCount)}`;
 
             recordingCount.textContent = countText;
 
@@ -1319,7 +1317,7 @@
                                         MP3 Audio
                                         <span class="text-[9px] px-1 rounded bg-indigo-500/30 text-indigo-300">192k</span>
                                     </div>
-                                    <div class="text-[10px] text-slate-400">Универсальный сжатый</div>
+                                    <div class="text-[10px] text-slate-400">Універсальний стиснутий</div>
                                 </div>
                             </div>
                             <span class="text-[11px] font-mono text-slate-500 group-hover:text-indigo-400">.mp3</span>
@@ -1333,7 +1331,7 @@
                                         WAV Audio
                                         <span class="text-[9px] px-1 rounded bg-emerald-500/30 text-emerald-300">PCM</span>
                                     </div>
-                                    <div class="text-[10px] text-slate-400">Студийный без потерь</div>
+                                    <div class="text-[10px] text-slate-400">Студійний без втрат</div>
                                 </div>
                             </div>
                             <span class="text-[11px] font-mono text-slate-500 group-hover:text-emerald-400">.wav</span>
@@ -1425,7 +1423,7 @@
         // Batch export all recordings in default format
         btnExportAll.addEventListener('click', async () => {
             if (recordings.length === 0) return;
-            showToast(`Экспорт всех записей (${recordings.length}) в ${defaultFormat.toUpperCase()}...`, 'info');
+            showToast(`Експорт усіх записів (${recordings.length}) у ${defaultFormat.toUpperCase()}...`, 'info');
             for (const rec of recordings) {
                 await exportRecording(rec.id, defaultFormat);
             }
@@ -1625,8 +1623,8 @@
             }
 
             // Language Toggle Button UI
-            document.getElementById('lang-flag').textContent = lang === 'ua' ? '🇷🇺' : '🇬🇧';
-            document.getElementById('lang-text').textContent = lang.toUpperCase();
+            document.getElementById('lang-flag').textContent = lang === 'ua' ? '🇺🇦' : '🇬🇧';
+            document.getElementById('lang-text').textContent = lang === 'ua' ? 'UA' : 'EN';
 
             // Format dynamic description
             setFormat(defaultFormat);
@@ -1635,15 +1633,15 @@
         }
 
         btnLangToggle.addEventListener('click', () => {
-            const nextLang = currentLang === 'ru' ? 'en' : 'ru';
+            const nextLang = currentLang === 'ua' ? 'en' : 'ua';
             applyLanguage(nextLang);
-            showToast(`Язык изменен на: ${nextLang.toUpperCase()}`, 'info');
+            showToast(`Мову змінено на: ${nextLang.toUpperCase()}`, 'info');
         });
 
         // Event Listeners for Recording Controls
         refreshDevicesBtn.addEventListener('click', () => {
             loadMicrophones();
-            showToast(currentLang === 'ua' ? 'Список мікрофонів оновлено' : 'Microphones list refreshed', 'info');
+            showToast(currentLang === 'en' ? 'Microphones list refreshed' : 'Список мікрофонів оновлено', 'info');
         });
 
         btnRecord.addEventListener('click', startRecording);
