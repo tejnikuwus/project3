@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceFlow Studio - Pro Dictaphone & Audio Converter</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#151f32',
+                            950: '#0a0f1d'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- lamejs MP3 encoder library with fallback -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
+    <script>
+        if (typeof lamejs === 'undefined') {
+            const fallbackScript = document.createElement('script');
+            fallbackScript.src = 'https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js';
+            document.head.appendChild(fallbackScript);
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        
+        /* Dropdown animation */
+        .dropdown-menu {
+            transform-origin: top right;
+            transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+        }
+        .dropdown-menu.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- App Header -->
+    <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-6 py-3.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="../index.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-xs font-semibold text-slate-300 hover:text-white transition" title="Повернутися на сайт портфоліо">
+                    <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    <span class="hidden sm:inline">← Портфоліо</span>
+                </a>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        DictoWeb <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 font-medium border border-indigo-500/30">Pro Audio</span>
+                    </h1>
+                    <p class="text-xs text-slate-400" id="header-subtitle">Професійний веб-диктофон з експортом у MP3, WAV, WebM</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <!-- Language Toggle Button -->
+                <button id="btn-lang-toggle" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-xs font-semibold text-slate-300 transition">
+                    <span id="lang-flag">🇷🇺</span>
+                    <span id="lang-text">RU</span>
+                </button>
+
+                <!-- Status Badge -->
+                <div id="status-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/90 border border-slate-700/60 text-xs font-medium text-slate-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500" id="status-dot"></span>
+                    <span id="status-text">Готов к записи</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Column: Controls, Visualizer & Format Settings (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+            
+            <!-- Microphone Selector Card -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <label for="mic-select" class="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-12 7.5a6 6 0 016-6v-1.5m-6 7.5h12M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"></path>
+                        </svg>
+                        <span id="label-mic-select">Микрофон (Устройство ввода)</span>
+                    </label>
+                    <button id="refresh-devices" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        <span id="text-refresh-mics">Обновить</span>
+                    </button>
+                </div>
+                <div class="relative">
+                    <select id="mic-select" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition appearance-none cursor-pointer">
+                        <option value="">Системный микрофон по умолчанию</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Format Settings Card (NEW) -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-semibold text-white" id="title-format-settings">Формат сохранения по умолчанию</h2>
+                            <p class="text-[11px] text-slate-400" id="desc-format-settings">Выберите предпочтительный формат для скачивания записей</p>
+                        </div>
+                    </div>
+                    <span id="format-badge-pill" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold">
+                        MP3 • 192 kbps
+                    </span>
+                </div>
+
+                <!-- Format Selection Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-3.5">
+                    <!-- MP3 Option -->
+                    <button type="button" data-format="mp3" class="format-option-btn relative p-3 rounded-xl border border-indigo-500 bg-indigo-950/40 text-left transition hover:border-indigo-400 flex flex-col justify-between group">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-bold text-white group-hover:text-indigo-200">MP3</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/30 text-indigo-300 font-semibold uppercase">Хит</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-mono">~1.4 МБ/мин</span>
+                        <div class="format-check-icon absolute top-2 right-2 text-indigo-400">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </button>
+
+                    <!-- WAV Option -->
+                    <button type="button" data-format="wav" class="format-option-btn relative p-3 rounded-xl border border-slate-800 bg-slate-950/40 text-left transition hover:border-slate-700 flex flex-col justify-between group">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-bold text-slate-300 group-hover:text-white">WAV</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold uppercase">Lossless</span>
+                        </div>
+                        <span class="text-[11px] text-slate-500 font-mono">16-bit PCM</span>
+                        <div class="format-check-icon hidden absolute top-2 right-2 text-emerald-400">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </button>
+
+                    <!-- WebM Option -->
+                    <button type="button" data-format="webm" class="format-option-btn relative p-3 rounded-xl border border-slate-800 bg-slate-950/40 text-left transition hover:border-slate-700 flex flex-col justify-between group">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-bold text-slate-300 group-hover:text-white">WebM</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-semibold uppercase">Opus</span>
+                        </div>
+                        <span class="text-[11px] text-slate-500 font-mono">~0.5 МБ/мин</span>
+                        <div class="format-check-icon hidden absolute top-2 right-2 text-cyan-400">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </button>
+
+                    <!-- OGG Option -->
+                    <button type="button" data-format="ogg" class="format-option-btn relative p-3 rounded-xl border border-slate-800 bg-slate-950/40 text-left transition hover:border-slate-700 flex flex-col justify-between group">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-bold text-slate-300 group-hover:text-white">OGG</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-400 font-semibold uppercase">Audio</span>
+                        </div>
+                        <span class="text-[11px] text-slate-500 font-mono">~0.8 МБ/мин</span>
+                        <div class="format-check-icon hidden absolute top-2 right-2 text-violet-400">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Format Details Sub-panel -->
+                <div class="bg-slate-950/60 rounded-xl p-3 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <!-- Dynamic Description -->
+                    <div class="flex items-center gap-2 text-slate-300">
+                        <span class="text-base" id="format-desc-icon">🎵</span>
+                        <span id="format-dynamic-desc">MP3: Универсальный формат. Воспроизводится на ПК, смартфонах, в авто и мессенджерах.</span>
+                    </div>
+
+                    <!-- MP3 Bitrate Selector (Visible when MP3 is selected) -->
+                    <div id="mp3-bitrate-container" class="flex items-center gap-2 shrink-0">
+                        <label for="mp3-bitrate" class="text-slate-400 text-[11px] font-medium" id="label-bitrate">Битрейт:</label>
+                        <select id="mp3-bitrate" class="bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500">
+                            <option value="128">128 kbps (Речь)</option>
+                            <option value="192" selected>192 kbps (Стандарт HQ)</option>
+                            <option value="320">320 kbps (Максимум)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualizer & Timer Card -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm flex flex-col items-center justify-between relative overflow-hidden min-h-[290px]">
+                <!-- Background glow effect -->
+                <div class="absolute -top-24 -left-24 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-violet-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Timer display -->
+                <div class="text-center z-10 w-full">
+                    <span class="text-xs uppercase tracking-widest font-semibold text-slate-400 mb-1 block" id="text-timer-title">Длительность записи</span>
+                    <div id="timer-display" class="text-5xl sm:text-6xl font-mono font-bold tracking-tight text-white drop-shadow-md">00:00</div>
+                </div>
+
+                <!-- Canvas Visualizer -->
+                <div class="w-full h-32 my-4 relative z-10 bg-slate-950/60 rounded-xl border border-slate-800/60 overflow-hidden flex items-center justify-center">
+                    <canvas id="visualizer" class="w-full h-full"></canvas>
+                    <div id="visualizer-placeholder" class="absolute text-xs text-slate-500 font-medium text-center px-4">
+                        Звуковая волна появится здесь во время записи
+                    </div>
+                </div>
+
+                <!-- Recording Controls Bar -->
+                <div class="flex items-center justify-center gap-4 z-10 w-full">
+                    <!-- Record / Start Button -->
+                    <button id="btn-record" class="group relative flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white shadow-lg shadow-rose-600/30 transition-all transform hover:scale-105 active:scale-95 focus:outline-none">
+                        <span class="w-6 h-6 rounded-full bg-white group-hover:scale-95 transition"></span>
+                        <span class="absolute -bottom-7 text-xs font-medium text-slate-400 whitespace-nowrap" id="btn-record-label">Запись</span>
+                    </button>
+
+                    <!-- Pause / Resume Button -->
+                    <button id="btn-pause" disabled class="flex items-center justify-center w-12 h-12 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700/80 transition shadow-md" title="Пауза / Продолжить">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" id="pause-icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Stop Button -->
+                    <button id="btn-stop" disabled class="group relative flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700/80 text-white shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none" title="Остановить и сохранить">
+                        <span class="w-6 h-6 rounded bg-rose-500 group-hover:bg-rose-400 transition"></span>
+                        <span class="absolute -bottom-7 text-xs font-medium text-slate-400 whitespace-nowrap" id="btn-stop-label">Стоп</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settings / Info Card -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-sm text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span id="info-storage-text">Конвертация выполняется прямо в вашем браузере. Файлы можно скачивать в MP3, WAV, WebM или OGG в любой момент.</span>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <span class="px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[11px]" id="info-engine-badge">Аудиодвижок: WebAudio + LAME</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Recording History & Audio Player (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col">
+            
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm flex flex-col h-full min-h-[560px]">
+                
+                <!-- History Header -->
+                <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-base font-semibold text-white flex items-center gap-2" id="title-history">
+                            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            <span>История записей</span>
+                        </h2>
+                        <span id="recording-count" class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 font-semibold border border-indigo-500/20">0 записей</span>
+                    </div>
+
+                    <!-- History Actions (Export all / Clear) -->
+                    <div class="flex items-center gap-2" id="history-batch-actions" style="display: none;">
+                        <button id="btn-export-all" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition flex items-center gap-1 px-2 py-1 rounded bg-indigo-500/10 border border-indigo-500/20" title="Скачать все записи в текущем формате">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            <span id="text-export-all">Скачать все</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recordings List Container -->
+                <div id="recordings-list" class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3 max-h-[580px]">
+                    <!-- Empty State -->
+                    <div id="empty-state" class="flex flex-col items-center justify-center h-full text-center py-16 text-slate-500">
+                        <div class="w-16 h-16 rounded-full bg-slate-800/60 border border-slate-700/60 flex items-center justify-center mb-3 text-slate-400">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-sm font-medium text-slate-300" id="empty-state-title">Записей пока нет</p>
+                        <p class="text-xs text-slate-500 mt-1 max-w-[240px]" id="empty-state-desc">Нажмите кнопку записи, чтобы записать звук с микрофона и сохранить в любом формате.</p>
+                    </div>
+                </div>
+
+                <!-- Advanced Built-in Audio Player Footer preview for active selected recording -->
+                <div id="active-player-container" class="hidden mt-4 pt-4 border-t border-slate-800 bg-slate-950/70 p-4 rounded-xl border border-slate-800/90 shadow-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2 overflow-hidden">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                            <span id="now-playing-title" class="text-xs font-semibold text-white truncate max-w-[200px]">Сейчас играет</span>
+                            <span id="now-playing-format-tag" class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">MP3</span>
+                        </div>
+                        <button id="close-player" class="text-slate-400 hover:text-slate-200 text-xs px-2 py-0.5 rounded hover:bg-slate-800 transition">✕ Закрыть</button>
+                    </div>
+
+                    <!-- Custom Timeline Scrubber -->
+                    <div class="flex items-center gap-2 my-2">
+                        <span id="player-current-time" class="text-[11px] font-mono text-slate-400 min-w-[34px]">00:00</span>
+                        <input id="player-seek" type="range" min="0" max="100" value="0" step="0.1" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                        <span id="player-duration" class="text-[11px] font-mono text-slate-400 min-w-[34px]">00:00</span>
+                    </div>
+
+                    <!-- Player Controls Bar -->
+                    <div class="flex items-center justify-between pt-1">
+                        <div class="flex items-center gap-1.5">
+                            <!-- Skip -5s -->
+                            <button id="btn-player-rewind" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs" title="Назад на 5 сек">
+                                ↺ -5s
+                            </button>
+                            <!-- Play / Pause -->
+                            <button id="btn-player-play-pause" class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm">
+                                <svg class="w-4 h-4" id="player-play-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                            <!-- Skip +5s -->
+                            <button id="btn-player-forward" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs" title="Вперед на 5 сек">
+                                +5s ↻
+                            </button>
+                        </div>
+
+                        <!-- Speed Controls -->
+                        <div class="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-[11px]">
+                            <button class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition" data-speed="0.75">0.75x</button>
+                            <button class="player-speed-btn px-1.5 py-0.5 rounded bg-indigo-600 text-white font-semibold" data-speed="1.0">1x</button>
+                            <button class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition" data-speed="1.25">1.25x</button>
+                            <button class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition" data-speed="1.5">1.5x</button>
+                            <button class="player-speed-btn px-1.5 py-0.5 rounded text-slate-400 hover:text-white transition" data-speed="2.0">2x</button>
+                        </div>
+                    </div>
+
+                    <!-- Hidden native audio element for decoding & playback -->
+                    <audio id="audio-player" class="hidden"></audio>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500 mt-auto">
+        <p id="footer-text">VoiceFlow Studio &bull; Высокоточная запись звука с конвертацией в MP3, WAV, WebM &bull; Работает локально в браузере</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Localization Dictionary
+        const i18n = {
+            ru: {
+                subtitle: 'Профессиональный веб-диктофон с экспортом в MP3, WAV, WebM',
+                ready: 'Готов к записи',
+                recording: 'Идет запись...',
+                paused: 'Запись на паузе',
+                micSelect: 'Микрофон (Устройство ввода)',
+                refresh: 'Обновить',
+                defaultMic: 'Системный микрофон по умолчанию',
+                formatSettingsTitle: 'Формат сохранения по умолчанию',
+                formatSettingsDesc: 'Выберите предпочтительный формат для скачивания записей',
+                bitrateLabel: 'Битрейт:',
+                bitrateVoice: '128 kbps (Речь)',
+                bitrateStandard: '192 kbps (Стандарт HQ)',
+                bitrateMax: '320 kbps (Максимум)',
+                timerTitle: 'Длительность записи',
+                visualizerPlaceholder: 'Звуковая волна появится здесь во время записи',
+                record: 'Запись',
+                stop: 'Стоп',
+                storageInfo: 'Конвертация выполняется прямо в вашем браузере. Файлы можно скачивать в MP3, WAV, WebM или OGG в любой момент.',
+                engineBadge: 'Аудиодвижок: WebAudio + LAME',
+                historyTitle: 'История записей',
+                recordingsCount: 'записей',
+                recordingSingle: 'запись',
+                recordingsFew: 'записи',
+                exportAll: 'Скачать все',
+                emptyTitle: 'Записей пока нет',
+                emptyDesc: 'Нажмите кнопку записи, чтобы записать звук с микрофона и сохранить в любом формате.',
+                play: 'Слушать',
+                download: 'Скачать',
+                saveAs: 'Другие форматы',
+                rename: 'Переименовать',
+                delete: 'Удалить',
+                converting: 'Конвертация...',
+                nowPlaying: 'Сейчас играет',
+                close: '✕ Закрыть',
+                footer: 'VoiceFlow Studio • Высокоточная запись звука с конвертацией в MP3, WAV, WebM • Работает локально в браузере',
+                formatDescMp3: 'MP3: Универсальный формат. Воспроизводится на ПК, смартфонах, в авто и мессенджерах.',
+                formatDescWav: 'WAV: Студийный несжатый 16-бит PCM. Идеально для монтажа и Whisper AI.',
+                formatDescWebm: 'WebM: Высокоэффективный кодек Opus. Минимальный размер файла.',
+                formatDescOgg: 'OGG: Открытый аудиоконтейнер, популярен в свободном ПО.',
+                toastRecStarted: 'Запись звука началась',
+                toastRecStopped: 'Запись сохранена в историю',
+                toastRecPaused: 'Запись приостановлена',
+                toastRecResumed: 'Запись возобновлена',
+                toastConverting: 'Конвертация в формат',
+                toastReady: 'Файл успешно подготовлен и скачивается',
+                toastDeleted: 'Запись удалена',
+                toastRenamed: 'Название записи обновлено',
+                enterNamePrompt: 'Введите новое имя записи:'
+            },
+            en: {
+                subtitle: 'High-fidelity web dictaphone with MP3, WAV, WebM export',
+                ready: 'Ready to Record',
+                recording: 'Recording Audio...',
+                paused: 'Recording Paused',
+                micSelect: 'Input Device (Microphone)',
+                refresh: 'Refresh',
+                defaultMic: 'Default System Microphone',
+                formatSettingsTitle: 'Default Export Format',
+                formatSettingsDesc: 'Choose your preferred audio format for downloads',
+                bitrateLabel: 'Bitrate:',
+                bitrateVoice: '128 kbps (Voice)',
+                bitrateStandard: '192 kbps (Standard HQ)',
+                bitrateMax: '320 kbps (Maximum)',
+                timerTitle: 'Recording Duration',
+                visualizerPlaceholder: 'Audio waveform will appear here when recording',
+                record: 'Record',
+                stop: 'Stop',
+                storageInfo: 'Audio conversion is done directly in your browser. Download as MP3, WAV, WebM or OGG anytime.',
+                engineBadge: 'Audio Engine: WebAudio + LAME',
+                historyTitle: 'Recording History',
+                recordingsCount: 'recordings',
+                recordingSingle: 'recording',
+                recordingsFew: 'recordings',
+                exportAll: 'Export All',
+                emptyTitle: 'No recordings yet',
+                emptyDesc: 'Hit the record button to capture audio from your chosen microphone and save in any format.',
+                play: 'Play',
+                download: 'Download',
+                saveAs: 'Save As...',
+                rename: 'Rename',
+                delete: 'Delete',
+                converting: 'Converting...',
+                nowPlaying: 'Now Playing',
+                close: '✕ Close',
+                footer: 'VoiceFlow Studio • High-fidelity audio recording with MP3, WAV, WebM export • Browser local',
+                formatDescMp3: 'MP3: Universal compressed audio. Plays everywhere (smartphones, cars, PC, messengers).',
+                formatDescWav: 'WAV: Studio lossless 16-bit PCM. Ideal for audio editing and Whisper AI.',
+                formatDescWebm: 'WebM: High-efficiency Opus codec. Lowest file size for web archiving.',
+                formatDescOgg: 'OGG: Open audio container format, widely supported across Linux and open-source tools.',
+                toastRecStarted: 'Recording started successfully',
+                toastRecStopped: 'Recording saved to history',
+                toastRecPaused: 'Recording paused',
+                toastRecResumed: 'Recording resumed',
+                toastConverting: 'Converting to format',
+                toastReady: 'File converted! Download started',
+                toastDeleted: 'Recording deleted',
+                toastRenamed: 'Recording renamed',
+                enterNamePrompt: 'Enter new recording name:'
+            }
+        };
+
+        let currentLang = 'ru'; // Default to Russian as requested by user
+
+        // Global Format State
+        let defaultFormat = 'mp3'; // 'mp3', 'wav', 'webm', 'ogg'
+        let defaultBitrate = 192;  // 128, 192, 320
+
+        // DOM Elements
+        const micSelect = document.getElementById('mic-select');
+        const refreshDevicesBtn = document.getElementById('refresh-devices');
+        const btnRecord = document.getElementById('btn-record');
+        const btnPause = document.getElementById('btn-pause');
+        const btnStop = document.getElementById('btn-stop');
+        const timerDisplay = document.getElementById('timer-display');
+        const statusBadge = document.getElementById('status-badge');
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const recordingsList = document.getElementById('recordings-list');
+        const emptyState = document.getElementById('empty-state');
+        const recordingCount = document.getElementById('recording-count');
+        const canvas = document.getElementById('visualizer');
+        const visualizerPlaceholder = document.getElementById('visualizer-placeholder');
+        const audioPlayer = document.getElementById('audio-player');
+        const activePlayerContainer = document.getElementById('active-player-container');
+        const nowPlayingTitle = document.getElementById('now-playing-title');
+        const nowPlayingFormatTag = document.getElementById('now-playing-format-tag');
+        const closePlayerBtn = document.getElementById('close-player');
+        const toastContainer = document.getElementById('toast-container');
+        const mp3BitrateContainer = document.getElementById('mp3-bitrate-container');
+        const mp3BitrateSelect = document.getElementById('mp3-bitrate');
+        const formatBadgePill = document.getElementById('format-badge-pill');
+        const formatDescIcon = document.getElementById('format-desc-icon');
+        const formatDynamicDesc = document.getElementById('format-dynamic-desc');
+        const btnExportAll = document.getElementById('btn-export-all');
+        const historyBatchActions = document.getElementById('history-batch-actions');
+        const btnLangToggle = document.getElementById('btn-lang-toggle');
+
+        // Audio Player Custom Controls
+        const playerSeek = document.getElementById('player-seek');
+        const playerCurrentTime = document.getElementById('player-current-time');
+        const playerDuration = document.getElementById('player-duration');
+        const btnPlayerPlayPause = document.getElementById('btn-player-play-pause');
+        const playerPlayIcon = document.getElementById('player-play-icon');
+        const btnPlayerRewind = document.getElementById('btn-player-rewind');
+        const btnPlayerForward = document.getElementById('btn-player-forward');
+        const playerSpeedBtns = document.querySelectorAll('.player-speed-btn');
+
+        // Recording & Audio State
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let audioStream = null;
+        let audioContext = null;
+        let analyser = null;
+        let sourceNode = null;
+        let animationFrameId = null;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+        let isPaused = false;
+        let recordings = [];
+        let activeRecordingId = null;
+
+        // Toast Helper
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const bgColors = {
+                info: 'bg-indigo-600/95 border-indigo-500 text-white shadow-indigo-500/20',
+                success: 'bg-emerald-600/95 border-emerald-500 text-white shadow-emerald-500/20',
+                error: 'bg-rose-600/95 border-rose-500 text-white shadow-rose-500/20'
+            };
+            toast.className = `pointer-events-auto px-4 py-3 rounded-xl shadow-xl border text-xs font-medium backdrop-blur-md transition-all transform translate-y-2 opacity-0 flex items-center gap-2 ${bgColors[type] || bgColors.info}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // ==========================================
+        // AUDIO CONVERSION ENGINES (WAV & MP3)
+        // ==========================================
+
+        /**
+         * Decodes a recorded Blob into a Web Audio API AudioBuffer
+         */
+        async function getAudioBufferFromBlob(blob) {
+            const arrayBuffer = await blob.arrayBuffer();
+            const tempCtx = new (window.AudioContext || window.webkitAudioContext)();
+            // Slice arrayBuffer to avoid detached buffer issues in some WebKit browsers
+            const audioBuffer = await tempCtx.decodeAudioData(arrayBuffer.slice(0));
+            return audioBuffer;
+        }
+
+        /**
+         * Encodes an AudioBuffer into uncompressed 16-bit PCM WAV (RIFF standard)
+         * Compatible with Windows, macOS, Linux, DAWs, Whisper AI, and all audio players.
+         */
+        function audioBufferToWav(buffer) {
+            const numChannels = buffer.numberOfChannels;
+            const sampleRate = buffer.sampleRate;
+            const format = 1; // PCM
+            const bitDepth = 16;
+            const bytesPerSample = bitDepth / 8;
+            const blockAlign = numChannels * bytesPerSample;
+            const byteRate = sampleRate * blockAlign;
+            const dataSize = buffer.length * blockAlign;
+            const headerSize = 44;
+            const totalSize = headerSize + dataSize;
+            
+            const arrayBuffer = new ArrayBuffer(totalSize);
+            const view = new DataView(arrayBuffer);
+            
+            function writeString(offset, string) {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            }
+            
+            // RIFF Chunk Descriptor
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + dataSize, true);
+            writeString(8, 'WAVE');
+            
+            // 'fmt ' Sub-chunk
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true); // 16 for PCM
+            view.setUint16(20, format, true); // PCM = 1
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, byteRate, true);
+            view.setUint16(32, blockAlign, true);
+            view.setUint16(34, bitDepth, true);
+            
+            // 'data' Sub-chunk
+            writeString(36, 'data');
+            view.setUint32(40, dataSize, true);
+            
+            // Interleave samples
+            let offset = 44;
+            const channels = [];
+            for (let i = 0; i < numChannels; i++) {
+                channels.push(buffer.getChannelData(i));
+            }
+            
+            for (let i = 0; i < buffer.length; i++) {
+                for (let ch = 0; ch < numChannels; ch++) {
+                    let sample = channels[ch][i];
+                    // Clamp sample to [-1, 1]
+                    sample = Math.max(-1, Math.min(1, sample));
+                    // Scale to 16-bit signed integer
+                    const intSample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+                    view.setInt16(offset, intSample, true);
+                    offset += 2;
+                }
+            }
+            
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        /**
+         * Encodes an AudioBuffer into MP3 using lamejs
+         */
+        async function audioBufferToMp3(buffer, kbps = 192) {
+            if (typeof lamejs === 'undefined') {
+                throw new Error('Модуль MP3 еще загружается. Попробуйте снова через секунду или скачайте WAV.');
+            }
+            
+            const numChannels = Math.min(buffer.numberOfChannels, 2);
+            const sampleRate = buffer.sampleRate;
+            const mp3encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, kbps);
+            const mp3Data = [];
+            const sampleBlockSize = 1152;
+            
+            if (numChannels === 1) {
+                const samples = buffer.getChannelData(0);
+                const len = samples.length;
+                const int16Samples = new Int16Array(len);
+                for (let i = 0; i < len; i++) {
+                    let s = Math.max(-1, Math.min(1, samples[i]));
+                    int16Samples[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+                }
+                
+                for (let i = 0; i < len; i += sampleBlockSize) {
+                    const chunk = int16Samples.subarray(i, i + sampleBlockSize);
+                    const mp3buf = mp3encoder.encodeBuffer(chunk);
+                    if (mp3buf.length > 0) {
+                        mp3Data.push(mp3buf);
+                    }
+                }
+            } else {
+                const left = buffer.getChannelData(0);
+                const right = buffer.getChannelData(1);
+                const len = left.length;
+                const leftInt16 = new Int16Array(len);
+                const rightInt16 = new Int16Array(len);
+                
+                for (let i = 0; i < len; i++) {
+                    let l = Math.max(-1, Math.min(1, left[i]));
+                    let r = Math.max(-1, Math.min(1, right[i]));
+                    leftInt16[i] = l < 0 ? l * 0x8000 : l * 0x7FFF;
+                    rightInt16[i] = r < 0 ? r * 0x8000 : r * 0x7FFF;
+                }
+                
+                for (let i = 0; i < len; i += sampleBlockSize) {
+                    const leftChunk = leftInt16.subarray(i, i + sampleBlockSize);
+                    const rightChunk = rightInt16.subarray(i, i + sampleBlockSize);
+                    const mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
+                    if (mp3buf.length > 0) {
+                        mp3Data.push(mp3buf);
+                    }
+                }
+            }
+            
+            const endBuf = mp3encoder.flush();
+            if (endBuf.length > 0) {
+                mp3Data.push(endBuf);
+            }
+            
+            return new Blob(mp3Data, { type: 'audio/mp3' });
+        }
+
+        /**
+         * Gets or converts recording blob for a requested format with caching
+         */
+        async function getRecordingBlobForFormat(rec, targetFormat) {
+            if (!rec.convertedBlobs) {
+                rec.convertedBlobs = {};
+            }
+
+            // Return cached version if already converted
+            if (targetFormat === 'webm') {
+                return rec.blob;
+            }
+            if (rec.convertedBlobs[targetFormat]) {
+                return rec.convertedBlobs[targetFormat];
+            }
+
+            // Decode AudioBuffer
+            const audioBuffer = await getAudioBufferFromBlob(rec.blob);
+            let convertedBlob;
+
+            if (targetFormat === 'wav') {
+                convertedBlob = audioBufferToWav(audioBuffer);
+            } else if (targetFormat === 'mp3') {
+                const kbps = parseInt(mp3BitrateSelect.value, 10) || defaultBitrate;
+                convertedBlob = await audioBufferToMp3(audioBuffer, kbps);
+            } else if (targetFormat === 'ogg') {
+                // Return OGG Opus Blob wrapper
+                const arrayBuffer = await rec.blob.arrayBuffer();
+                convertedBlob = new Blob([arrayBuffer], { type: 'audio/ogg' });
+            } else {
+                convertedBlob = rec.blob;
+            }
+
+            rec.convertedBlobs[targetFormat] = convertedBlob;
+            return convertedBlob;
+        }
+
+        /**
+         * Helper to trigger instant file download in browser
+         */
+        function triggerDownload(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 3000);
+        }
+
+        /**
+         * Main export function for a recording
+         */
+        window.exportRecording = async function(id, formatToUse = null, btnElement = null) {
+            const rec = recordings.find(r => r.id === id);
+            if (!rec) return;
+
+            const format = (formatToUse || defaultFormat).toLowerCase();
+            const formatLabels = {
+                mp3: 'MP3',
+                wav: 'WAV',
+                webm: 'WebM',
+                ogg: 'OGG'
+            };
+
+            const origHtml = btnElement ? btnElement.innerHTML : null;
+            if (btnElement) {
+                btnElement.disabled = true;
+                btnElement.innerHTML = `
+                    <svg class="animate-spin -ml-0.5 mr-1 h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>${i18n[currentLang].converting}</span>
+                `;
+            }
+
+            showToast(`${i18n[currentLang].toastConverting} ${formatLabels[format]}...`, 'info');
+
+            try {
+                const blob = await getRecordingBlobForFormat(rec, format);
+                const safeName = (rec.name || 'Recording').trim().replace(/[\/\\?%*:|"<>]/g, '_');
+                const filename = `${safeName}.${format}`;
+                
+                triggerDownload(blob, filename);
+                showToast(`${formatLabels[format]}: ${i18n[currentLang].toastReady}`, 'success');
+            } catch (err) {
+                console.error('Export error:', err);
+                showToast(`Ошибка экспорта: ${err.message}`, 'error');
+            } finally {
+                if (btnElement && origHtml) {
+                    btnElement.disabled = false;
+                    btnElement.innerHTML = origHtml;
+                }
+                // Close any open dropdowns
+                document.querySelectorAll('.dropdown-menu').forEach(el => el.classList.add('hidden'));
+            }
+        };
+
+        // ==========================================
+        // RECORDING & MICROPHONE MANAGEMENT
+        // ==========================================
+
+        async function loadMicrophones() {
+            try {
+                const tempStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                tempStream.getTracks().forEach(track => track.stop());
+
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const audioInputs = devices.filter(device => device.kind === 'audioinput');
+
+                micSelect.innerHTML = `<option value="">${i18n[currentLang].defaultMic}</option>`;
+                if (audioInputs.length === 0) {
+                    showToast('Микрофоны не обнаружены.', 'error');
+                } else {
+                    audioInputs.forEach((device, index) => {
+                        const option = document.createElement('option');
+                        option.value = device.deviceId;
+                        option.text = device.label || `Микрофон ${index + 1}`;
+                        micSelect.appendChild(option);
+                    });
+                }
+            } catch (err) {
+                console.error('Error accessing microphones:', err);
+                showToast('Доступ к микрофону заблокирован или недоступен.', 'error');
+            }
+        }
+
+        function initVisualizer(stream) {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+
+                analyser = audioContext.createAnalyser();
+                sourceNode = audioContext.createMediaStreamSource(stream);
+                sourceNode.connect(analyser);
+                analyser.fftSize = 256;
+
+                visualizerPlaceholder.style.display = 'none';
+                drawWaveform();
+            } catch (e) {
+                console.error('Visualizer error:', e);
+            }
+        }
+
+        function drawWaveform() {
+            const canvasCtx = canvas.getContext('2d');
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+
+            function render() {
+                animationFrameId = requestAnimationFrame(render);
+                analyser.getByteFrequencyData(dataArray);
+
+                canvasCtx.fillStyle = 'rgb(10, 15, 29)';
+                canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const barWidth = (canvas.width / bufferLength) * 2.5;
+                let barHeight;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    barHeight = (dataArray[i] / 255) * canvas.height * 0.95;
+
+                    const gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, 0);
+                    gradient.addColorStop(0, '#6366f1');
+                    gradient.addColorStop(0.5, '#8b5cf6');
+                    gradient.addColorStop(1, '#ec4899');
+
+                    canvasCtx.fillStyle = gradient;
+                    canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+                    x += barWidth + 1;
+                }
+            }
+            render();
+        }
+
+        function stopVisualizer() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            if (sourceNode) {
+                sourceNode.disconnect();
+                sourceNode = null;
+            }
+            const canvasCtx = canvas.getContext('2d');
+            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+            visualizerPlaceholder.style.display = 'block';
+        }
+
+        function startTimer() {
+            secondsElapsed = 0;
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                if (!isPaused) {
+                    secondsElapsed++;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const seconds = (secondsElapsed % 60).toString().padStart(2, '0');
+            timerDisplay.textContent = `${minutes}:${seconds}`;
+        }
+
+        function setAppStatus(status, text) {
+            statusText.textContent = text;
+            statusDot.className = 'w-2 h-2 rounded-full ' + {
+                ready: 'bg-emerald-500',
+                recording: 'bg-rose-500 animate-pulse',
+                paused: 'bg-amber-500 animate-pulse'
+            }[status];
+        }
+
+        async function startRecording() {
+            audioChunks = [];
+            const selectedMicId = micSelect.value;
+            const constraints = {
+                audio: selectedMicId ? { deviceId: { exact: selectedMicId } } : true
+            };
+
+            try {
+                audioStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                let options = { mimeType: 'audio/webm;codecs=opus' };
+                if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                    options = { mimeType: 'audio/webm' };
+                    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                        options = {};
+                    }
+                }
+
+                mediaRecorder = new MediaRecorder(audioStream, options);
+
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data && event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+                    saveRecording(audioBlob);
+                    cleanupStream();
+                };
+
+                mediaRecorder.start(100);
+                initVisualizer(audioStream);
+                startTimer();
+
+                btnRecord.disabled = true;
+                btnRecord.classList.add('opacity-50', 'cursor-not-allowed');
+                btnPause.disabled = false;
+                btnStop.disabled = false;
+                micSelect.disabled = true;
+                setAppStatus('recording', i18n[currentLang].recording);
+                showToast(i18n[currentLang].toastRecStarted, 'success');
+
+            } catch (err) {
+                console.error('Failed to start recording:', err);
+                showToast('Не удалось запустить запись с микрофона.', 'error');
+            }
+        }
+
+        function togglePauseRecording() {
+            if (!mediaRecorder) return;
+            if (isPaused) {
+                mediaRecorder.resume();
+                isPaused = false;
+                btnPause.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>`;
+                setAppStatus('recording', i18n[currentLang].recording);
+                showToast(i18n[currentLang].toastRecResumed, 'info');
+            } else {
+                mediaRecorder.pause();
+                isPaused = true;
+                btnPause.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>`;
+                setAppStatus('paused', i18n[currentLang].paused);
+                showToast(i18n[currentLang].toastRecPaused, 'info');
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+            stopTimer();
+            stopVisualizer();
+
+            btnRecord.disabled = false;
+            btnRecord.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnPause.disabled = true;
+            btnPause.innerHTML = `
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>`;
+            btnStop.disabled = true;
+            micSelect.disabled = false;
+            isPaused = false;
+            setAppStatus('ready', i18n[currentLang].ready);
+            showToast(i18n[currentLang].toastRecStopped, 'success');
+        }
+
+        function cleanupStream() {
+            if (audioStream) {
+                audioStream.getTracks().forEach(track => track.stop());
+                audioStream = null;
+            }
+        }
+
+        function saveRecording(blob) {
+            const url = URL.createObjectURL(blob);
+            const date = new Date();
+            const timestamp = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const datestamp = date.toLocaleDateString();
+            const durationFormatted = timerDisplay.textContent;
+            
+            const recName = currentLang === 'ru' 
+                ? `Запись ${recordings.length + 1}` 
+                : `Recording ${recordings.length + 1}`;
+
+            const recordingItem = {
+                id: 'rec_' + Date.now(),
+                name: recName,
+                dateStr: `${datestamp} ${timestamp}`,
+                duration: durationFormatted,
+                size: (blob.size / (1024 * 1024)).toFixed(2) + ' MB',
+                blob: blob,
+                url: url,
+                convertedBlobs: {}
+            };
+
+            recordings.unshift(recordingItem);
+            renderRecordingsList();
+        }
+
+        // ==========================================
+        // UI RENDERING: RECORDINGS & FORMAT DROPDOWNS
+        // ==========================================
+
+        function renderRecordingsList() {
+            const count = recordings.length;
+            const countText = currentLang === 'ru'
+                ? `${count} ${count === 1 ? i18n.ru.recordingSingle : (count >= 2 && count <= 4 ? i18n.ru.recordingsFew : i18n.ru.recordingsCount)}`
+                : `${count} ${count === 1 ? i18n.en.recordingSingle : i18n.en.recordingsCount}`;
+            
+            recordingCount.textContent = countText;
+
+            if (count === 0) {
+                emptyState.style.display = 'flex';
+                recordingsList.innerHTML = '';
+                recordingsList.appendChild(emptyState);
+                historyBatchActions.style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            historyBatchActions.style.display = 'flex';
+            recordingsList.innerHTML = '';
+
+            const t = i18n[currentLang];
+            const defFormatUpper = defaultFormat.toUpperCase();
+
+            recordings.forEach((rec) => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-950/70 border border-slate-800/80 rounded-xl p-4 flex flex-col gap-3 hover:border-slate-700 transition group relative';
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2.5 overflow-hidden">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+                                </svg>
+                            </div>
+                            <div class="overflow-hidden">
+                                <div class="flex items-center gap-2">
+                                    <h3 class="text-sm font-semibold text-white truncate cursor-pointer hover:text-indigo-300 transition" onclick="renameRecording('${rec.id}')" title="${t.rename}">
+                                        ${rec.name}
+                                    </h3>
+                                    <button onclick="renameRecording('${rec.id}')" class="text-slate-500 hover:text-slate-300 transition p-0.5" title="${t.rename}">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <p class="text-[11px] text-slate-400">${rec.dateStr} &bull; <span class="text-indigo-400 font-mono">${rec.duration}</span> &bull; ${rec.size}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-900">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <!-- Play Button -->
+                            <button onclick="playRecording('${rec.id}')" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition flex items-center gap-1.5 shadow-sm">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>${t.play}</span>
+                            </button>
+
+                            <!-- Primary Download Button (Default Format) -->
+                            <div class="inline-flex rounded-lg shadow-sm">
+                                <button onclick="exportRecording('${rec.id}', '${defaultFormat}', this)" class="px-3 py-1.5 rounded-l-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition flex items-center gap-1.5 border border-slate-700/80 border-r-0">
+                                    <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                    <span>${t.download} .${defFormatUpper}</span>
+                                </button>
+                                
+                                <!-- Dropdown Trigger Button -->
+                                <button type="button" onclick="toggleFormatMenu('${rec.id}', event)" class="px-2 py-1.5 rounded-r-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition border border-slate-700/80 hover:text-white" title="${t.saveAs}">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Delete Button -->
+                        <button onclick="deleteRecording('${rec.id}')" class="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg transition" title="${t.delete}">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Floating Format Dropdown Menu -->
+                    <div id="format-menu-${rec.id}" class="dropdown-menu hidden absolute right-4 top-16 z-30 w-56 rounded-xl bg-slate-900 border border-slate-700/90 shadow-2xl p-1.5 backdrop-blur-xl">
+                        <div class="px-2.5 py-1.5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-800 mb-1">
+                            ${t.saveAs}
+                        </div>
+                        <!-- MP3 -->
+                        <button onclick="exportRecording('${rec.id}', 'mp3', this)" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-indigo-600/20 text-slate-200 hover:text-white text-xs flex items-center justify-between transition group">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm">🎵</span>
+                                <div>
+                                    <div class="font-semibold flex items-center gap-1.5">
+                                        MP3 Audio
+                                        <span class="text-[9px] px-1 rounded bg-indigo-500/30 text-indigo-300">192k</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400">Универсальный сжатый</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 group-hover:text-indigo-400">.mp3</span>
+                        </button>
+                        <!-- WAV -->
+                        <button onclick="exportRecording('${rec.id}', 'wav', this)" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-emerald-600/20 text-slate-200 hover:text-white text-xs flex items-center justify-between transition group">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm">🎼</span>
+                                <div>
+                                    <div class="font-semibold flex items-center gap-1.5">
+                                        WAV Audio
+                                        <span class="text-[9px] px-1 rounded bg-emerald-500/30 text-emerald-300">PCM</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400">Студийный без потерь</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 group-hover:text-emerald-400">.wav</span>
+                        </button>
+                        <!-- WebM -->
+                        <button onclick="exportRecording('${rec.id}', 'webm', this)" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-cyan-600/20 text-slate-200 hover:text-white text-xs flex items-center justify-between transition group">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm">🌐</span>
+                                <div>
+                                    <div class="font-semibold flex items-center gap-1.5">
+                                        WebM Audio
+                                        <span class="text-[9px] px-1 rounded bg-cyan-500/30 text-cyan-300">Opus</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400">Исходный компактный</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 group-hover:text-cyan-400">.webm</span>
+                        </button>
+                        <!-- OGG -->
+                        <button onclick="exportRecording('${rec.id}', 'ogg', this)" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-violet-600/20 text-slate-200 hover:text-white text-xs flex items-center justify-between transition group">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm">📻</span>
+                                <div>
+                                    <div class="font-semibold">OGG Audio</div>
+                                    <div class="text-[10px] text-slate-400">Открытый формат</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 group-hover:text-violet-400">.ogg</span>
+                        </button>
+                    </div>
+                `;
+                recordingsList.appendChild(card);
+            });
+        }
+
+        // Toggle format menu for a specific recording card
+        window.toggleFormatMenu = function(id, event) {
+            event.stopPropagation();
+            const menu = document.getElementById(`format-menu-${id}`);
+            if (!menu) return;
+
+            // Close all other menus first
+            document.querySelectorAll('.dropdown-menu').forEach(el => {
+                if (el !== menu) el.classList.add('hidden');
+            });
+
+            menu.classList.toggle('hidden');
+        };
+
+        // Close dropdown menus when clicking anywhere else
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-menu')) {
+                document.querySelectorAll('.dropdown-menu').forEach(el => el.classList.add('hidden'));
+            }
+        });
+
+        // Rename recording
+        window.renameRecording = function(id) {
+            const rec = recordings.find(r => r.id === id);
+            if (!rec) return;
+
+            const newName = prompt(i18n[currentLang].enterNamePrompt, rec.name);
+            if (newName && newName.trim() !== '') {
+                rec.name = newName.trim();
+                renderRecordingsList();
+                if (activeRecordingId === id) {
+                    nowPlayingTitle.textContent = rec.name;
+                }
+                showToast(i18n[currentLang].toastRenamed, 'success');
+            }
+        };
+
+        // Delete recording
+        window.deleteRecording = function(id) {
+            const index = recordings.findIndex(r => r.id === id);
+            if (index !== -1) {
+                URL.revokeObjectURL(recordings[index].url);
+                recordings.splice(index, 1);
+                renderRecordingsList();
+                showToast(i18n[currentLang].toastDeleted, 'info');
+                if (activeRecordingId === id) {
+                    activePlayerContainer.classList.add('hidden');
+                    audioPlayer.pause();
+                    activeRecordingId = null;
+                }
+            }
+        };
+
+        // Batch export all recordings in default format
+        btnExportAll.addEventListener('click', async () => {
+            if (recordings.length === 0) return;
+            showToast(`Экспорт всех записей (${recordings.length}) в ${defaultFormat.toUpperCase()}...`, 'info');
+            for (const rec of recordings) {
+                await exportRecording(rec.id, defaultFormat);
+            }
+        });
+
+        // ==========================================
+        // ADVANCED AUDIO PLAYER
+        // ==========================================
+
+        window.playRecording = function(id) {
+            const rec = recordings.find(r => r.id === id);
+            if (!rec) return;
+
+            activeRecordingId = id;
+            audioPlayer.src = rec.url;
+            nowPlayingTitle.textContent = rec.name;
+            nowPlayingFormatTag.textContent = defaultFormat.toUpperCase();
+            activePlayerContainer.classList.remove('hidden');
+
+            audioPlayer.play().catch(e => console.error('Playback error:', e));
+            updatePlayerPlayState(true);
+            showToast(`${i18n[currentLang].nowPlaying}: ${rec.name}`, 'info');
+        };
+
+        function updatePlayerPlayState(isPlaying) {
+            if (isPlaying) {
+                playerPlayIcon.innerHTML = `<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>`;
+            } else {
+                playerPlayIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>`;
+            }
+        }
+
+        btnPlayerPlayPause.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                updatePlayerPlayState(true);
+            } else {
+                audioPlayer.pause();
+                updatePlayerPlayState(false);
+            }
+        });
+
+        audioPlayer.addEventListener('timeupdate', () => {
+            if (audioPlayer.duration) {
+                const current = audioPlayer.currentTime;
+                const total = audioPlayer.duration;
+                playerSeek.value = (current / total) * 100;
+                
+                const curM = Math.floor(current / 60).toString().padStart(2, '0');
+                const curS = Math.floor(current % 60).toString().padStart(2, '0');
+                playerCurrentTime.textContent = `${curM}:${curS}`;
+
+                const totM = Math.floor(total / 60).toString().padStart(2, '0');
+                const totS = Math.floor(total % 60).toString().padStart(2, '0');
+                playerDuration.textContent = `${totM}:${totS}`;
+            }
+        });
+
+        playerSeek.addEventListener('input', () => {
+            if (audioPlayer.duration) {
+                audioPlayer.currentTime = (playerSeek.value / 100) * audioPlayer.duration;
+            }
+        });
+
+        audioPlayer.addEventListener('ended', () => {
+            updatePlayerPlayState(false);
+            playerSeek.value = 0;
+            playerCurrentTime.textContent = '00:00';
+        });
+
+        btnPlayerRewind.addEventListener('click', () => {
+            audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
+        });
+
+        btnPlayerForward.addEventListener('click', () => {
+            if (audioPlayer.duration) {
+                audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
+            }
+        });
+
+        playerSpeedBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const speed = parseFloat(btn.dataset.speed);
+                audioPlayer.playbackRate = speed;
+                playerSpeedBtns.forEach(b => {
+                    b.classList.remove('bg-indigo-600', 'text-white', 'font-semibold');
+                    b.classList.add('text-slate-400');
+                });
+                btn.classList.add('bg-indigo-600', 'text-white', 'font-semibold');
+                btn.classList.remove('text-slate-400');
+            });
+        });
+
+        closePlayerBtn.addEventListener('click', () => {
+            audioPlayer.pause();
+            activePlayerContainer.classList.add('hidden');
+            activeRecordingId = null;
+        });
+
+        // ==========================================
+        // FORMAT SETTINGS MANAGEMENT
+        // ==========================================
+
+        function setFormat(format) {
+            defaultFormat = format;
+            
+            // Update format option buttons styling
+            document.querySelectorAll('.format-option-btn').forEach(btn => {
+                const isSelected = btn.dataset.format === format;
+                const checkIcon = btn.querySelector('.format-check-icon');
+                
+                if (isSelected) {
+                    btn.classList.add('border-indigo-500', 'bg-indigo-950/40');
+                    btn.classList.remove('border-slate-800', 'bg-slate-950/40');
+                    if (checkIcon) checkIcon.classList.remove('hidden');
+                } else {
+                    btn.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+                    btn.classList.add('border-slate-800', 'bg-slate-950/40');
+                    if (checkIcon) checkIcon.classList.add('hidden');
+                }
+            });
+
+            // Update description & subpanels
+            const t = i18n[currentLang];
+            if (format === 'mp3') {
+                formatDescIcon.textContent = '🎵';
+                formatDynamicDesc.textContent = t.formatDescMp3;
+                mp3BitrateContainer.style.display = 'flex';
+                formatBadgePill.textContent = `MP3 • ${mp3BitrateSelect.value} kbps`;
+            } else if (format === 'wav') {
+                formatDescIcon.textContent = '🎼';
+                formatDynamicDesc.textContent = t.formatDescWav;
+                mp3BitrateContainer.style.display = 'none';
+                formatBadgePill.textContent = 'WAV • 16-bit PCM';
+            } else if (format === 'webm') {
+                formatDescIcon.textContent = '🌐';
+                formatDynamicDesc.textContent = t.formatDescWebm;
+                mp3BitrateContainer.style.display = 'none';
+                formatBadgePill.textContent = 'WebM • Opus';
+            } else if (format === 'ogg') {
+                formatDescIcon.textContent = '📻';
+                formatDynamicDesc.textContent = t.formatDescOgg;
+                mp3BitrateContainer.style.display = 'none';
+                formatBadgePill.textContent = 'OGG • Audio';
+            }
+
+            renderRecordingsList();
+        }
+
+        document.querySelectorAll('.format-option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setFormat(btn.dataset.format);
+            });
+        });
+
+        mp3BitrateSelect.addEventListener('change', () => {
+            defaultBitrate = parseInt(mp3BitrateSelect.value, 10);
+            if (defaultFormat === 'mp3') {
+                formatBadgePill.textContent = `MP3 • ${defaultBitrate} kbps`;
+            }
+        });
+
+        // ==========================================
+        // LOCALIZATION LOGIC
+        // ==========================================
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            const t = i18n[lang];
+
+            document.getElementById('header-subtitle').textContent = t.subtitle;
+            document.getElementById('label-mic-select').textContent = t.micSelect;
+            document.getElementById('text-refresh-mics').textContent = t.refresh;
+            document.getElementById('title-format-settings').textContent = t.formatSettingsTitle;
+            document.getElementById('desc-format-settings').textContent = t.formatSettingsDesc;
+            document.getElementById('label-bitrate').textContent = t.bitrateLabel;
+            document.getElementById('text-timer-title').textContent = t.timerTitle;
+            document.getElementById('visualizer-placeholder').textContent = t.visualizerPlaceholder;
+            document.getElementById('btn-record-label').textContent = t.record;
+            document.getElementById('btn-stop-label').textContent = t.stop;
+            document.getElementById('info-storage-text').textContent = t.storageInfo;
+            document.getElementById('info-engine-badge').textContent = t.engineBadge;
+            document.getElementById('title-history').querySelector('span').textContent = t.historyTitle;
+            document.getElementById('text-export-all').textContent = t.exportAll;
+            document.getElementById('empty-state-title').textContent = t.emptyTitle;
+            document.getElementById('empty-state-desc').textContent = t.emptyDesc;
+            document.getElementById('footer-text').textContent = t.footer;
+            document.getElementById('close-player').textContent = t.close;
+
+            // Status Badge text
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                setAppStatus('recording', t.recording);
+            } else if (mediaRecorder && mediaRecorder.state === 'paused') {
+                setAppStatus('paused', t.paused);
+            } else {
+                setAppStatus('ready', t.ready);
+            }
+
+            // Language Toggle Button UI
+            document.getElementById('lang-flag').textContent = lang === 'ru' ? '🇷🇺' : '🇬🇧';
+            document.getElementById('lang-text').textContent = lang.toUpperCase();
+
+            // Format dynamic description
+            setFormat(defaultFormat);
+            loadMicrophones();
+            renderRecordingsList();
+        }
+
+        btnLangToggle.addEventListener('click', () => {
+            const nextLang = currentLang === 'ru' ? 'en' : 'ru';
+            applyLanguage(nextLang);
+            showToast(`Язык изменен на: ${nextLang.toUpperCase()}`, 'info');
+        });
+
+        // Event Listeners for Recording Controls
+        refreshDevicesBtn.addEventListener('click', () => {
+            loadMicrophones();
+            showToast(currentLang === 'ru' ? 'Список микрофонов обновлен' : 'Microphone list refreshed', 'info');
+        });
+
+        btnRecord.addEventListener('click', startRecording);
+        btnPause.addEventListener('click', togglePauseRecording);
+        btnStop.addEventListener('click', stopRecording);
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            // Auto detect language from browser if preferred
+            const browserLang = (navigator.language || '').toLowerCase();
+            if (browserLang.startsWith('ru')) {
+                currentLang = 'ru';
+            } else {
+                currentLang = 'ru'; // Default to Russian as requested by user
+            }
+            applyLanguage(currentLang);
+            loadMicrophones();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="dictBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0e17"/>
+      <stop offset="50%" stop-color="#0d1322"/>
+      <stop offset="100%" stop-color="#141a2e"/>
+    </linearGradient>
+
+    <!-- Waveform Glow Gradients -->
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="35%" stop-color="#6366f1"/>
+      <stop offset="70%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+
+    <linearGradient id="barGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="60%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#00ff88"/>
+    </linearGradient>
+
+    <linearGradient id="micGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="800" height="450" fill="url(#dictBg)"/>
+
+  <!-- Audio Grid Lines (Time & dB) -->
+  <path d="M 50 110 L 750 110 M 50 180 L 750 180 M 50 250 L 750 250 M 50 320 L 750 320" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
+  <path d="M 150 70 L 150 360 M 300 70 L 300 360 M 450 70 L 450 360 M 600 70 L 600 360" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+
+  <!-- Center Baseline Zero-Crossing -->
+  <line x1="50" y1="215" x2="750" y2="215" stroke="rgba(99, 102, 241, 0.25)" stroke-width="1.5" stroke-dasharray="6,6"/>
+
+  <!-- Left Side: Studio Condenser Microphone Illustration -->
+  <g transform="translate(130, 95)" filter="url(#subtleGlow)">
+    <!-- Shock Mount Outer Rings -->
+    <circle cx="50" cy="90" r="68" fill="none" stroke="#334155" stroke-width="3" opacity="0.6"/>
+    <circle cx="50" cy="90" r="54" fill="none" stroke="#4f46e5" stroke-width="2" opacity="0.7"/>
+    <line x1="0" y1="90" x2="100" y2="90" stroke="#6366f1" stroke-width="1.5" opacity="0.4"/>
+    <line x1="50" y1="40" x2="50" y2="140" stroke="#6366f1" stroke-width="1.5" opacity="0.4"/>
+
+    <!-- Mic Body Capsule -->
+    <rect x="32" y="35" width="36" height="85" rx="18" fill="url(#micGrad)" stroke="#6366f1" stroke-width="2"/>
+    
+    <!-- Mic Mesh Grille Upper Half -->
+    <rect x="34" y="37" width="32" height="42" rx="16" fill="rgba(99, 102, 241, 0.15)" stroke="#818cf8" stroke-width="1"/>
+    <!-- Mesh lines -->
+    <line x1="38" y1="48" x2="62" y2="48" stroke="#a5b4fc" stroke-width="1" opacity="0.7"/>
+    <line x1="38" y1="56" x2="62" y2="56" stroke="#a5b4fc" stroke-width="1" opacity="0.7"/>
+    <line x1="38" y1="64" x2="62" y2="64" stroke="#a5b4fc" stroke-width="1" opacity="0.7"/>
+
+    <!-- Mic LED Status Dot (Recording ON) -->
+    <circle cx="50" cy="95" r="3.5" fill="#ef4444" filter="url(#neonGlow)"/>
+    <circle cx="50" cy="95" r="7" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.5"/>
+
+    <!-- Mic Stand Connector -->
+    <path d="M 46 122 L 54 122 L 53 170 L 47 170 Z" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <!-- Base Plate -->
+    <ellipse cx="50" cy="172" rx="28" ry="8" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+
+    <!-- Sound Acoustic Waves emitted towards right -->
+    <path d="M 95 65 A 35 35 0 0 1 95 115" fill="none" stroke="#00f2fe" stroke-width="2" opacity="0.8" stroke-linecap="round"/>
+    <path d="M 115 50 A 60 60 0 0 1 115 130" fill="none" stroke="#38bdf8" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+    <path d="M 135 35 A 85 85 0 0 1 135 145" fill="none" stroke="#818cf8" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Right Side: Frequency Equalizer Bars -->
+  <g transform="translate(320, 260)">
+    <!-- 18 Spectrum Bars -->
+    <rect x="0" y="-30" width="7" height="30" rx="3" fill="url(#barGrad)" opacity="0.7"/>
+    <rect x="14" y="-55" width="7" height="55" rx="3" fill="url(#barGrad)" opacity="0.8"/>
+    <rect x="28" y="-40" width="7" height="40" rx="3" fill="url(#barGrad)" opacity="0.75"/>
+    <rect x="42" y="-75" width="7" height="75" rx="3" fill="url(#barGrad)" opacity="0.85"/>
+    <rect x="56" y="-95" width="7" height="95" rx="3" fill="url(#barGrad)" opacity="0.9"/>
+    <rect x="70" y="-120" width="7" height="120" rx="3" fill="url(#barGrad)" filter="url(#subtleGlow)"/>
+    <rect x="84" y="-105" width="7" height="105" rx="3" fill="url(#barGrad)" opacity="0.9"/>
+    <rect x="98" y="-80" width="7" height="80" rx="3" fill="url(#barGrad)" opacity="0.85"/>
+    <rect x="112" y="-110" width="7" height="110" rx="3" fill="url(#barGrad)" opacity="0.9"/>
+    <rect x="126" y="-135" width="7" height="135" rx="3" fill="url(#barGrad)" filter="url(#subtleGlow)"/>
+    <rect x="140" y="-90" width="7" height="90" rx="3" fill="url(#barGrad)" opacity="0.85"/>
+    <rect x="154" y="-65" width="7" height="65" rx="3" fill="url(#barGrad)" opacity="0.8"/>
+    <rect x="168" y="-85" width="7" height="85" rx="3" fill="url(#barGrad)" opacity="0.85"/>
+    <rect x="182" y="-50" width="7" height="50" rx="3" fill="url(#barGrad)" opacity="0.75"/>
+    <rect x="196" y="-70" width="7" height="70" rx="3" fill="url(#barGrad)" opacity="0.8"/>
+    <rect x="210" y="-45" width="7" height="45" rx="3" fill="url(#barGrad)" opacity="0.7"/>
+    <rect x="224" y="-30" width="7" height="30" rx="3" fill="url(#barGrad)" opacity="0.6"/>
+    <rect x="238" y="-18" width="7" height="18" rx="3" fill="url(#barGrad)" opacity="0.5"/>
+  </g>
+
+  <!-- Flowing Oscilloscope Audio Waveform Curve -->
+  <path d="M 270 215 C 310 215, 330 140, 360 140 C 390 140, 400 290, 430 290 C 460 290, 480 110, 510 110 C 540 110, 555 310, 585 310 C 615 310, 630 160, 660 160 C 690 160, 710 215, 750 215"
+        fill="none" stroke="url(#waveGrad)" stroke-width="4.5" stroke-linecap="round" filter="url(#neonGlow)"/>
+
+  <!-- Waveform Shadow/Reflection -->
+  <path d="M 270 215 C 310 215, 330 170, 360 170 C 390 170, 400 260, 430 260 C 460 260, 480 150, 510 150 C 540 150, 555 270, 585 270 C 615 270, 630 180, 660 180 C 690 180, 710 215, 750 215"
+        fill="none" stroke="url(#waveGrad)" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Format Badges & Tags Overlay -->
+  <!-- MP3 Badge -->
+  <g transform="translate(580, 75)">
+    <rect width="80" height="26" rx="13" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+    <text x="40" y="17" fill="#c7d2fe" font-family="'Inter', sans-serif" font-size="11" font-weight="700" text-anchor="middle">MP3 • HQ</text>
+  </g>
+
+  <!-- WAV Badge -->
+  <g transform="translate(670, 75)">
+    <rect width="90" height="26" rx="13" fill="#042f2e" stroke="#14b8a6" stroke-width="1.5"/>
+    <text x="45" y="17" fill="#5eead4" font-family="'Inter', sans-serif" font-size="11" font-weight="700" text-anchor="middle">WAV 16-bit</text>
+  </g>
+
+  <!-- WebM & OGG Badges -->
+  <g transform="translate(580, 340)">
+    <rect width="72" height="24" rx="12" fill="#311042" stroke="#d946ef" stroke-width="1"/>
+    <text x="36" y="16" fill="#f0abfc" font-family="'Inter', sans-serif" font-size="10" font-weight="600" text-anchor="middle">WebM Opus</text>
+  </g>
+
+  <g transform="translate(662, 340)">
+    <rect width="64" height="24" rx="12" fill="#1e293b" stroke="#64748b" stroke-width="1"/>
+    <text x="32" y="16" fill="#cbd5e1" font-family="'Inter', sans-serif" font-size="10" font-weight="600" text-anchor="middle">OGG Vorbis</text>
+  </g>
+
+  <!-- Live Audio Telemetry Stats Footer in Graphic -->
+  <rect x="50" y="388" width="700" height="38" rx="10" fill="rgba(15, 23, 42, 0.7)" stroke="rgba(255,255,255,0.08)"/>
+  
+  <circle cx="75" cy="407" r="4" fill="#00ff88" filter="url(#neonGlow)"/>
+  <text x="88" y="411" fill="#94a3b8" font-family="'Consolas', monospace" font-size="11">AudioContext: 48 kHz / 32-bit Float</text>
+
+  <text x="380" y="411" fill="#818cf8" font-family="'Consolas', monospace" font-size="11">FFT: AnalyserNode 2048</text>
+
+  <rect x="590" y="396" width="145" height="22" rx="6" fill="rgba(99, 102, 241, 0.15)" stroke="#6366f1" stroke-width="1"/>
+  <text x="662" y="411" fill="#a5b4fc" font-family="'Inter', sans-serif" font-size="11" font-weight="600" text-anchor="middle">🎙️ DictoWeb Studio</text>
+</svg>
