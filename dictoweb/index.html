@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark">
+<html lang="ua" class="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -627,7 +627,7 @@
             }
         };
 
-        let currentLang = 'ru'; // Default to Russian as requested by user
+        let currentLang = 'ua'; // Default to Russian as requested by user
 
         // Global Format State
         let defaultFormat = 'mp3'; // 'mp3', 'wav', 'webm', 'ogg'
@@ -1195,7 +1195,7 @@
             const datestamp = date.toLocaleDateString();
             const durationFormatted = timerDisplay.textContent;
 
-            const recName = currentLang === 'ru'
+            const recName = currentLang === 'ua'
                 ? `Запис ${recordings.length + 1}`
                 : `Recording ${recordings.length + 1}`;
 
@@ -1220,8 +1220,8 @@
 
         function renderRecordingsList() {
             const count = recordings.length;
-            const countText = currentLang === 'ru'
-                ? `${count} ${count === 1 ? i18n.ru.recordingSingle : (count >= 2 && count <= 4 ? i18n.ru.recordingsFew : i18n.ru.recordingsCount)}`
+            const countText = currentLang === 'ua'
+                ? `${count} ${count === 1 ? i18n.ua.recordingSingle : (count >= 2 && count <= 4 ? i18n.ru.recordingsFew : i18n.ru.recordingsCount)}`
                 : `${count} ${count === 1 ? i18n.en.recordingSingle : i18n.en.recordingsCount}`;
 
             recordingCount.textContent = countText;
@@ -1625,7 +1625,7 @@
             }
 
             // Language Toggle Button UI
-            document.getElementById('lang-flag').textContent = lang === 'ru' ? '🇷🇺' : '🇬🇧';
+            document.getElementById('lang-flag').textContent = lang === 'ua' ? '🇷🇺' : '🇬🇧';
             document.getElementById('lang-text').textContent = lang.toUpperCase();
 
             // Format dynamic description
@@ -1643,7 +1643,7 @@
         // Event Listeners for Recording Controls
         refreshDevicesBtn.addEventListener('click', () => {
             loadMicrophones();
-            showToast(currentLang === 'ru' ? 'Список мікрофонів оновлено' : 'Microphones list refreshed', 'info');
+            showToast(currentLang === 'ua' ? 'Список мікрофонів оновлено' : 'Microphones list refreshed', 'info');
         });
 
         btnRecord.addEventListener('click', startRecording);
