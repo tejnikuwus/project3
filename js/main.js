@@ -295,18 +295,22 @@ void setup() {
     title: "12-DOF Автономний Робот-павук на Raspberry Pi CM5",
     category: "mechatronics",
     categoryLabel: "Мехатроніка",
-    description: "Шагаючий робот-павук (Quadruped / Hexapod) з 12 ступенями свободи, інверсною кінематикою (Inverse Kinematics), керуванням по Wi-Fi/Bluetooth та автоматичним обходом перешкод.",
+    description: "Шагаючий робот-павук (Quadruped / Hexapod) з 12 ступенями свободи, інверсною кінематикою (Inverse Kinematics), керуванням по Wi-Fi/Bluetooth та автоматичним обходом перешкод. Репозиторій: <a href=\"https://github.com/tejnikuwus/MMP\" target=\"_blank\" rel=\"noopener noreferrer\">https://github.com/tejnikuwus/MMP</a>",
     image: "assets/spider_robot.svg",
     tags: ["Raspberry Pi", "12-DOF Servos", "Inverse Kinematics", "PCA9685", "C++", "3D Printing"],
+    linkUrl: "https://github.com/tejnikuwus/MMP",
+    btnText: "📦 GitHub MMP",
     specs: {
       MCU: "Raspberry Pi CM5",
       ServoDriver: "3x PCA9685 16-Ch 12-Bit I2C PWM Controller",
       Actuators: "12x MG996R Metal Gear  Servos",
       Sensors: "HC-SR04 Ultrasonic Sensor + MPU6050 IMU Gyro",
       Power: "Li-ion 12v 5V 5A DC-DC Buck Converter",
-      GaitEngine: "Tripod & Wave Gait IK Engine (C++)"
+      GaitEngine: "Tripod & Wave Gait IK Engine (C++)",
+      GitHub: `<a href="https://github.com/tejnikuwus/MMP" target="_blank" rel="noopener noreferrer">tejnikuwus/MMP</a>`
     },
     codeSnippet: `secret`,
+    schemaText: "Raspberry Pi CM5 через I2C керує шим-контролерами PCA9685, які живлять 12 сервоприводів MG996R, спираючись на покази сенсорів HC-SR04 та MPU6050."
   },
   {
     id: 5,
@@ -360,7 +364,7 @@ function initProjects() {
       const card = document.createElement('div');
       card.className = 'project-card';
       const demoBtnHtml = p.linkUrl
-        ? `<a href="${p.linkUrl}" target="_blank" class="btn btn-primary btn-sm" style="margin-right: 8px;">
+        ? `<a href="${p.linkUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="margin-right: 8px;">
             ${p.btnText || '🚀 Запустити проект'}
            </a>`
         : '';
@@ -409,9 +413,18 @@ function initProjects() {
     const project = projectsData.find(p => p.id === id);
     if (!project) return;
 
+    const modalLinkBtn = project.linkUrl
+      ? `<div style="margin-bottom: 20px;">
+          <a href="${project.linkUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+            ${project.btnText || '🚀 Запустити проект'}
+          </a>
+         </div>`
+      : '';
+
     modalBody.innerHTML = `
       <h2 style="font-size: 1.6rem; margin-bottom: 12px;" class="gradient-text">${project.title}</h2>
-      <p style="color: var(--text-muted); margin-bottom: 24px;">${project.description}</p>
+      <p style="color: var(--text-muted); margin-bottom: 16px;">${project.description}</p>
+      ${modalLinkBtn}
       
       <div class="modal-tabs">
         <button class="tab-btn active" data-tab="specs">Специфікація & Компоненти</button>

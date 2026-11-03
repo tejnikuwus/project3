@@ -757,6 +757,18 @@ button {
   flex-grow: 1;
 }
 
+.project-desc a {
+  color: var(--accent-cyan);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  word-break: break-all;
+  transition: opacity var(--transition-fast);
+}
+
+.project-desc a:hover {
+  opacity: 0.8;
+}
+
 .project-tags {
   display: flex;
   flex-wrap: wrap;
@@ -1235,6 +1247,18 @@ button {
 
 .modal-body {
   padding: 30px;
+}
+
+.modal-body a {
+  color: var(--accent-cyan);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  word-break: break-all;
+  transition: opacity var(--transition-fast);
+}
+
+.modal-body a:hover {
+  opacity: 0.8;
 }
 
 .modal-tabs {
