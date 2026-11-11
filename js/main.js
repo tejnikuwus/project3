@@ -63,12 +63,12 @@ function initTypewriter() {
   if (!element) return;
 
   const titles = [
-    "Розробка мікроконтролерних систем",
-    "Мехатроніка & Робототехніка",
+    "Open-Source Hardware & Embedded Systems",
+    "Розробка від схемотехніки до firmware",
+    "12-DOF Шагаючий робот-павук (Inverse Kinematics)",
+    "ESP32-S3, STM32 ARM & Бездротова телеметрія",
     "Веб-диктофон DictoWeb & DSP Аудіо",
-    "12-DOF Шагаючі Роботи-павуки",
-    "IoT та Автоматизація пристроїв",
-    "Учень 10 класу НВК №141 «ОРТ» м. Києва"
+    "Учень 10 класу Ліцею №141 «ОРТ» м. Києва"
   ];
 
   let titleIndex = 0;
@@ -375,6 +375,7 @@ function initProjects() {
           <span class="project-badge">${p.categoryLabel}</span>
         </div>
         <div class="project-content">
+          <div class="project-hw-id">// HW-MOD: 0${p.id}</div>
           <h3 class="project-title">${p.title}</h3>
           <p class="project-desc">${p.description}</p>
           <div class="project-tags">
@@ -383,7 +384,7 @@ function initProjects() {
           <div class="project-footer" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;">
             ${demoBtnHtml}
             <button class="btn btn-secondary btn-sm open-modal-btn" data-id="${p.id}">
-              Детальніше & Specs
+              ⚡ Специфікація &amp; Specs
             </button>
           </div>
         </div>
@@ -391,14 +392,16 @@ function initProjects() {
       container.appendChild(card);
     });
 
-    // Attach click listener for modals
-    document.querySelectorAll('.open-modal-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = parseInt(e.currentTarget.getAttribute('data-id'));
-        openProjectModal(id);
-      });
-    });
   }
+
+  // Delegated click listener for modals (supports both dynamic grid and featured spotlight card)
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.open-modal-btn');
+    if (btn) {
+      const id = parseInt(btn.getAttribute('data-id'));
+      openProjectModal(id);
+    }
+  });
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -427,9 +430,9 @@ function initProjects() {
       ${modalLinkBtn}
       
       <div class="modal-tabs">
-        <button class="tab-btn active" data-tab="specs">Специфікація & Компоненти</button>
-        <button class="tab-btn" data-tab="code">Код (Source Code)</button>
-        <button class="tab-btn" data-tab="schema">Схема</button>
+        <button class="tab-btn active" data-tab="specs">[ Специфікація &amp; Pinout ]</button>
+        <button class="tab-btn" data-tab="code">[ Код Firmware ]</button>
+        <button class="tab-btn" data-tab="schema">[ Схема Підключення ]</button>
       </div>
 
       <div class="tab-content" id="tab-specs">
@@ -523,9 +526,9 @@ function initSimulator() {
   }
 
   // Initial welcome log
-  appendLog("ESP32-WROOM-32 Booting v1.0.4...", "success");
-  appendLog("UART Serial initialized at 115200 baud.", "info");
-  appendLog("GPIO 2 (LED), GPIO 4 (DHT22), ADC34 (Potentiometer) READY.", "info");
+  appendLog("ESP32-S3 System Booting v2.1.0 [Tejnikuwus Open Hardware Lab]...", "success");
+  appendLog("XTENSA LX7 Dual-Core 240MHz | FreeRTOS v10.4.3 | UART 115200 8N1", "info");
+  appendLog("Peripherals ONLINE: GPIO 2 (LED), GPIO 4 (DHT22), ADC1_CH6 (Potentiometer).", "info");
 
   // LED Toggle Listener
   ledToggle.addEventListener('click', () => {
@@ -534,12 +537,12 @@ function initSimulator() {
       ledToggle.classList.remove('on');
       ledVisual.classList.remove('active');
       ledStatusText.textContent = "LOW (OFF)";
-      appendLog("digitalWrite(2, LOW) -> LED OFF", "warn");
+      appendLog("gpio_set_level(GPIO_NUM_2, 0) -> Status LED OFF", "warn");
     } else {
       ledToggle.classList.add('on');
       ledVisual.classList.add('active');
       ledStatusText.textContent = "HIGH (ON)";
-      appendLog("digitalWrite(2, HIGH) -> LED ON", "success");
+      appendLog("gpio_set_level(GPIO_NUM_2, 1) -> Status LED ON [ACTIVE]", "success");
     }
   });
 
